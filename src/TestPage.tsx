@@ -41,7 +41,7 @@ const equipment = [
 const documentation = [
   'Utility locate records before field work proceeds',
   'Photos before, during, and after installation',
-  'Daily production notes and bore documentation',
+  'Daily production notes and installation documentation',
   'Issue tracking for access, crossings, restoration, and delays',
   'Closeout packages that support billing and handoff',
 ]
@@ -240,6 +240,47 @@ function TestPage() {
           ))}
         </div>
       </section>
+
+      <footer className="vertex-footer" role="contentinfo">
+        <div className="footer-shell">
+          <div className="footer-brand">
+            <a href="/test" aria-label="Vertex Infrastructure Group test page">
+              <img src="/assets/vertex-logo-wordmark.png" alt="Vertex Infrastructure Group" />
+            </a>
+            <h2>
+              <span>Vertex</span>
+              <span>Infrastructure</span>
+              <span>Group, LLC</span>
+            </h2>
+            <p>Trenchless utility infrastructure built with field discipline, clean records, and modern project communication.</p>
+          </div>
+
+          <div className="footer-contact" aria-label="Vertex contact details">
+            <a href="mailto:inquiries@vertexifg.com">
+              <Mail aria-hidden="true" />
+              inquiries@vertexifg.com
+            </a>
+            <a href="tel:+12245315731">
+              <Phone aria-hidden="true" />
+              (224) 531-5731
+            </a>
+            <span>
+              <MapPin aria-hidden="true" />
+              14729 Spring Valley Road, Morrison IL
+            </span>
+          </div>
+
+          <div className="footer-bottom">
+            <span>Copyright 2026 Vertex Infrastructure Group, LLC</span>
+            <nav aria-label="Footer sections">
+              <a href="#capabilities">Capabilities</a>
+              <a href="#field">Field execution</a>
+              <a href="#equipment">Equipment</a>
+              <a href="#contact">Project scope</a>
+            </nav>
+          </div>
+        </div>
+      </footer>
     </main>
   )
 }

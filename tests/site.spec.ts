@@ -107,10 +107,12 @@ test('local test page renders as a design workbench', async ({ page }) => {
   await expect(page.getByRole('img', { name: /Field crew installing/i })).toBeVisible()
   await expect(page.locator('img[src="/assets/dbc-service-truck.jpeg"]')).toBeVisible()
   await expect(page.locator('.equipment-runway img')).toHaveCount(3)
-  await expect(page.getByRole('link', { name: /inquiries@vertexifg.com/i })).toHaveAttribute(
-    'href',
-    'mailto:inquiries@vertexifg.com',
-  )
+  const inquiryLinks = page.getByRole('link', { name: /inquiries@vertexifg.com/i })
+  await expect(inquiryLinks).toHaveCount(2)
+  await expect(inquiryLinks.first()).toHaveAttribute('href', 'mailto:inquiries@vertexifg.com')
+  await expect(inquiryLinks.nth(1)).toHaveAttribute('href', 'mailto:inquiries@vertexifg.com')
+  await expect(page.getByRole('contentinfo')).toContainText('Vertex Infrastructure Group, LLC')
+  await expect(page.getByRole('contentinfo')).toContainText('Copyright 2026')
 })
 
 test('local test page loads assets and avoids mobile overflow', async ({ page }) => {

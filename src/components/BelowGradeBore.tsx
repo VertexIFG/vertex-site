@@ -47,7 +47,10 @@ function routeSamples(size: SceneSize, surfaceY: number, count = 220) {
 }
 
 function drawPath(ctx: CanvasRenderingContext2D, points: Point[], progress = 1) {
-  const visible = Math.max(2, Math.floor(points.length * clamp(progress)))
+  const clamped = clamp(progress)
+  if (clamped <= 0.006) return
+
+  const visible = Math.max(2, Math.floor(points.length * clamped))
   ctx.beginPath()
   ctx.moveTo(points[0].x, points[0].y)
   for (let index = 1; index < visible; index += 1) {
@@ -155,20 +158,53 @@ function drawDrillHead(ctx: CanvasRenderingContext2D, point: Point, next: Point,
   ctx.translate(point.x, point.y)
   ctx.rotate(angle)
   ctx.scale(scale, scale)
-  ctx.fillStyle = '#070809'
-  drawRoundedRect(ctx, -33, -16, 62, 32, 15)
-  ctx.fill()
-  ctx.fillStyle = '#e5091b'
+
+  ctx.strokeStyle = '#343a41'
+  ctx.lineWidth = 10
+  ctx.lineCap = 'round'
   ctx.beginPath()
-  ctx.moveTo(-44, 0)
-  ctx.lineTo(-10, -24)
-  ctx.lineTo(-10, 24)
-  ctx.closePath()
+  ctx.moveTo(-76, 0)
+  ctx.lineTo(-24, 0)
+  ctx.stroke()
+
+  const spin = progress * 34
+  ctx.save()
+  ctx.translate(20, 0)
+  ctx.rotate(spin)
+  ctx.strokeStyle = '#f8f6f1'
+  ctx.lineWidth = 3
+  for (let index = 0; index < 3; index += 1) {
+    ctx.rotate((Math.PI * 2) / 3)
+    ctx.beginPath()
+    ctx.moveTo(0, 0)
+    ctx.lineTo(23, 0)
+    ctx.stroke()
+  }
+  ctx.restore()
+
+  ctx.fillStyle = '#111418'
+  drawRoundedRect(ctx, -30, -16, 58, 32, 15)
   ctx.fill()
   ctx.strokeStyle = '#f8f6f1'
   ctx.lineWidth = 3
+  ctx.stroke()
+
+  ctx.fillStyle = '#2a3036'
+  drawRoundedRect(ctx, -18, -10, 30, 20, 9)
+  ctx.fill()
+
+  ctx.fillStyle = '#e5091b'
   ctx.beginPath()
-  ctx.arc(14, 0, 19, progress * 28, progress * 28 + Math.PI * 1.35)
+  ctx.moveTo(58, 0)
+  ctx.lineTo(22, -24)
+  ctx.lineTo(14, -8)
+  ctx.lineTo(14, 8)
+  ctx.lineTo(22, 24)
+  ctx.closePath()
+  ctx.fill()
+
+  ctx.strokeStyle = '#b40714'
+  ctx.lineWidth = 2
   ctx.stroke()
   ctx.restore()
 }
@@ -284,10 +320,18 @@ function drawHeroScene(ctx: CanvasRenderingContext2D, size: SceneSize, rawProgre
   }
 
   const utilities = [
-    { label: 'ELECTRIC', color: '#e5091b', y: soilTop + layerHeight * 0.55, x1: width * 0.08, x2: width * 0.46 },
-    { label: 'GAS', color: '#f3c634', y: soilTop + layerHeight * 1.02, x1: width * 0.54, x2: width * 0.93 },
-    { label: 'COMM / FIBER', color: '#f47b20', y: soilTop + layerHeight * 1.42, x1: width * 0.1, x2: width * 0.39 },
-    { label: 'POTABLE WATER', color: '#2e8fff', y: soilTop + layerHeight * 1.86, x1: width * 0.59, x2: width * 0.95 },
+    { label: 'ELECTRIC', color: '#e5091b', y: soilTop + layerHeight * 0.55, segments: [[width * 0.08, width * 0.46]] },
+    {
+      label: 'GAS',
+      color: '#f3c634',
+      y: soilTop + layerHeight * 1.02,
+      segments: [
+        [width * 0.54, width * 0.58],
+        [width * 0.73, width * 0.93],
+      ],
+    },
+    { label: 'COMM / FIBER', color: '#f47b20', y: soilTop + layerHeight * 1.42, segments: [[width * 0.1, width * 0.39]] },
+    { label: 'POTABLE WATER', color: '#2e8fff', y: soilTop + layerHeight * 1.86, segments: [[width * 0.59, width * 0.95]] },
   ]
   utilities.forEach((utility) => {
     ctx.save()
@@ -295,11 +339,13 @@ function drawHeroScene(ctx: CanvasRenderingContext2D, size: SceneSize, rawProgre
     ctx.strokeStyle = utility.color
     ctx.lineWidth = compact ? 4 : 7
     ctx.lineCap = 'round'
-    ctx.beginPath()
-    ctx.moveTo(utility.x1, utility.y)
-    ctx.lineTo(utility.x2, utility.y)
-    ctx.stroke()
-    drawLabel(ctx, utility.label, utility.x1, utility.y - 11, utility.color, compact ? 9 : 12)
+    utility.segments.forEach(([x1, x2]) => {
+      ctx.beginPath()
+      ctx.moveTo(x1, utility.y)
+      ctx.lineTo(x2, utility.y)
+      ctx.stroke()
+    })
+    drawLabel(ctx, utility.label, utility.segments[0][0], utility.y - 11, utility.color, compact ? 9 : 12)
     ctx.restore()
   })
 
@@ -308,7 +354,7 @@ function drawHeroScene(ctx: CanvasRenderingContext2D, size: SceneSize, rawProgre
   ctx.strokeStyle = '#e5091b'
   ctx.lineWidth = compact ? 11 : 18
   ctx.lineCap = 'round'
-  drawPath(ctx, samples, Math.max(0.18, drillMotion * 0.92))
+  drawPath(ctx, samples, drillMotion * 0.94)
   ctx.restore()
 
   ctx.save()
@@ -316,7 +362,7 @@ function drawHeroScene(ctx: CanvasRenderingContext2D, size: SceneSize, rawProgre
   ctx.strokeStyle = '#e5091b'
   ctx.lineWidth = compact ? 4 : 7
   ctx.lineCap = 'round'
-  drawPath(ctx, samples, Math.max(0.18, drillMotion * 0.92))
+  drawPath(ctx, samples, drillMotion * 0.94)
   ctx.restore()
 
   if (conduit > 0) {
@@ -365,7 +411,7 @@ function drawHeroScene(ctx: CanvasRenderingContext2D, size: SceneSize, rawProgre
 
   drawBoringRig(ctx, size, surfaceY, progress)
 
-  if (progress > 0.18 && conduit < 0.98) {
+  if (drillMotion > 0.006 && conduit < 0.98) {
     const head = pointAt(samples, drillMotion)
     const next = pointAt(samples, Math.min(1, drillMotion + 0.02))
     drawDrillHead(ctx, head, next, size, progress)

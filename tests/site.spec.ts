@@ -90,19 +90,22 @@ test('old brand and legacy email are absent', async ({ page }) => {
 test('local test page renders as a design workbench', async ({ page }) => {
   await page.goto('/test')
 
-  await expect(page.locator('.test-topbar')).toBeVisible()
-  await expect(page.locator('.test-brand img')).toHaveAttribute(
+  await expect(page.locator('.vertex-nav')).toBeVisible()
+  await expect(page.locator('.vertex-mark img')).toHaveAttribute(
     'src',
     '/assets/vertex-logo-wordmark.png',
   )
   await expect(
-    page.getByRole('heading', { name: /Utility installs with command-center precision/i }),
+    page.getByRole('heading', { name: /Utility infrastructure, installed with field precision/i }),
   ).toBeVisible()
-  await expect(page.getByRole('heading', { name: /Real crews\. Real equipment/i })).toBeVisible()
-  await expect(page.getByRole('heading', { name: /The tools that drive performance/i })).toBeVisible()
-  await expect(page.locator('.test-hero img')).toHaveCount(0)
-  await expect(page.locator('img[src="/assets/dbc-field-truck.jpg"]')).toBeVisible()
+  await expect(page.getByRole('heading', { name: /Underground utility work is won/i })).toBeVisible()
+  await expect(page.getByRole('heading', { name: /Equipment depth for utility work/i })).toBeVisible()
+  await expect(page.locator('.test-command-panel')).toHaveCount(0)
+  await expect(page.locator('.hero-photo img')).toHaveAttribute('src', '/assets/dbc-field-truck.jpg')
+  await expect(page.locator('.hero-photo img')).toBeVisible()
+  await expect(page.getByRole('img', { name: /Field crew installing/i })).toBeVisible()
   await expect(page.locator('img[src="/assets/dbc-service-truck.jpeg"]')).toBeVisible()
+  await expect(page.locator('.equipment-runway img')).toHaveCount(3)
   await expect(page.getByRole('link', { name: /support@vertexifg.com/i })).toHaveAttribute(
     'href',
     'mailto:support@vertexifg.com',

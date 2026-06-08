@@ -1,5 +1,6 @@
 import { motion } from 'motion/react'
 import { ArrowUpRight, Mail, MapPin, Phone } from 'lucide-react'
+import BelowGradeBore from './components/BelowGradeBore'
 import './TestPage.css'
 
 const utilityLines = [
@@ -132,6 +133,8 @@ function TestPage() {
           </article>
         ))}
       </section>
+
+      <BelowGradeBore />
 
       <motion.section id="field" className="field-section" {...reveal}>
         <div className="field-image">

@@ -14,7 +14,7 @@
   --gutter: max(28px, calc((100vw - 1240px) / 2));
 
   min-height: 100vh;
-  overflow-x: hidden;
+  overflow-x: clip;
   background: var(--paper);
   color: var(--ink);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
@@ -398,6 +398,182 @@
   color: rgba(248, 246, 241, 0.66);
   font-size: 0.96rem;
   line-height: 1.64;
+}
+
+.bore-scroll-section {
+  position: relative;
+  height: 520vh;
+  background: var(--ink);
+  color: var(--white);
+}
+
+.bore-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(330px, 0.38fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 44px;
+  padding: 116px var(--gutter) 42px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 75% 48%, rgba(229, 9, 27, 0.12), transparent 34%),
+    linear-gradient(180deg, #070809, #111418 52%, #070809);
+}
+
+.bore-sticky::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(rgba(248, 246, 241, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(248, 246, 241, 0.055) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0.65), #000 50%, rgba(0, 0, 0, 0.8));
+  pointer-events: none;
+}
+
+.bore-sticky::after {
+  content: '';
+  position: absolute;
+  left: -12vw;
+  right: -12vw;
+  bottom: 13vh;
+  height: 4px;
+  background: var(--red);
+  box-shadow: 0 0 58px rgba(229, 9, 27, 0.48);
+  transform: rotate(-3deg);
+  pointer-events: none;
+}
+
+.bore-copy,
+.bore-stage {
+  position: relative;
+  z-index: 1;
+}
+
+.bore-copy {
+  align-self: center;
+  padding-bottom: 0;
+}
+
+.bore-kicker {
+  display: inline-flex;
+  margin-bottom: 20px;
+  color: var(--amber);
+  font-size: 0.82rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.bore-copy h2 {
+  max-width: 620px;
+  color: var(--white);
+  font-size: 3.92rem;
+  line-height: 0.88;
+}
+
+.bore-beats {
+  display: grid;
+  gap: 1px;
+  margin-top: 36px;
+  border-top: 1px solid rgba(248, 246, 241, 0.16);
+}
+
+.bore-beats article {
+  display: grid;
+  grid-template-columns: 54px 1fr;
+  gap: 12px 18px;
+  padding: 13px 0;
+  border-bottom: 1px solid rgba(248, 246, 241, 0.16);
+  opacity: 0.42;
+  transform: translateX(0);
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+.bore-beats article.is-active {
+  opacity: 1;
+  transform: translateX(8px);
+}
+
+.bore-beats span {
+  color: var(--red);
+  font-family: 'Barlow Condensed', Inter, sans-serif;
+  font-size: 1.35rem;
+  font-weight: 900;
+}
+
+.bore-beats strong {
+  color: var(--white);
+  font-size: 1.02rem;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.bore-beats p {
+  grid-column: 2;
+  display: none;
+  max-width: 500px;
+  color: rgba(248, 246, 241, 0.62);
+  font-size: 0.92rem;
+  line-height: 1.62;
+}
+
+.bore-beats article.is-active p {
+  display: block;
+}
+
+.bore-stage {
+  align-self: center;
+  height: min(690px, calc(100vh - 176px));
+  min-height: 500px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(248, 246, 241, 0.14);
+  background:
+    linear-gradient(135deg, rgba(248, 246, 241, 0.09), rgba(248, 246, 241, 0.02) 40%, rgba(229, 9, 27, 0.08));
+  box-shadow:
+    inset 0 1px 0 rgba(248, 246, 241, 0.12),
+    0 34px 90px rgba(0, 0, 0, 0.24);
+  overflow: hidden;
+}
+
+.bore-stage canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.bore-stage-label {
+  position: absolute;
+  min-height: 28px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 9px;
+  border-left: 2px solid var(--red);
+  background: rgba(7, 8, 9, 0.72);
+  color: rgba(248, 246, 241, 0.78);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.bore-label-surface {
+  top: 18px;
+  left: 18px;
+}
+
+.bore-label-depth {
+  left: 18px;
+  bottom: 18px;
+}
+
+.bore-label-route {
+  right: 18px;
+  bottom: 18px;
 }
 
 .field-section {
@@ -898,6 +1074,22 @@
     max-width: 520px;
   }
 
+  .bore-sticky {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding-top: 108px;
+  }
+
+  .bore-copy {
+    align-self: auto;
+    max-width: 760px;
+    padding-bottom: 0;
+  }
+
+  .bore-stage {
+    min-height: 580px;
+  }
+
   .field-copy,
   .visibility-copy {
     padding: 84px var(--gutter);
@@ -1063,6 +1255,62 @@
     border-right: 0;
   }
 
+  .bore-scroll-section {
+    height: auto;
+  }
+
+  .bore-scroll-section[data-static='true'] .bore-sticky,
+  .bore-sticky {
+    position: relative;
+    height: auto;
+    min-height: auto;
+    grid-template-columns: 1fr;
+    gap: 26px;
+    padding: 104px 20px 76px;
+  }
+
+  .bore-sticky::after {
+    bottom: auto;
+    top: 70px;
+  }
+
+  .bore-copy h2 {
+    font-size: 3.1rem;
+    line-height: 0.9;
+  }
+
+  .bore-beats {
+    margin-top: 28px;
+  }
+
+  .bore-beats article {
+    grid-template-columns: 42px 1fr;
+    gap: 8px 14px;
+    padding: 14px 0;
+    opacity: 1;
+    transform: none;
+  }
+
+  .bore-beats span {
+    font-size: 1.15rem;
+  }
+
+  .bore-beats p {
+    display: block;
+    font-size: 0.88rem;
+  }
+
+  .bore-stage {
+    height: auto;
+    min-height: 420px;
+    order: -1;
+  }
+
+  .bore-stage-label {
+    min-height: 24px;
+    font-size: 0.62rem;
+  }
+
   .field-image,
   .visibility-media {
     min-height: 480px;
@@ -1184,6 +1432,14 @@
   .vertex-mark img {
     width: 138px;
   }
+
+  .bore-copy h2 {
+    font-size: 2.72rem;
+  }
+
+  .bore-stage {
+    min-height: 360px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1194,5 +1450,18 @@
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+  }
+
+  .bore-scroll-section {
+    height: auto;
+  }
+
+  .bore-sticky {
+    position: relative;
+  }
+
+  .bore-beats article {
+    opacity: 1;
+    transform: none;
   }
 }

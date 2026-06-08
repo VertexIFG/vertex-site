@@ -101,6 +101,8 @@ test('local test page renders as a design workbench', async ({ page }) => {
   ).toBeVisible()
   await expect(page.getByRole('heading', { name: /Underground utility work is won/i })).toBeVisible()
   await expect(page.getByRole('heading', { name: /Equipment depth for utility work/i })).toBeVisible()
+  await expect(page.getByRole('heading', { name: /Below grade, the route stays visible/i })).toBeVisible()
+  await expect(page.locator('.bore-stage canvas')).toBeVisible()
   await expect(page.locator('.test-command-panel')).toHaveCount(0)
   await expect(page.locator('.hero-photo img')).toHaveAttribute('src', '/assets/dbc-field-truck.jpg')
   await expect(page.locator('.hero-photo img')).toBeVisible()
@@ -139,4 +141,57 @@ test('local test page loads assets and avoids mobile overflow', async ({ page })
   }))
 
   expect(metrics.scrollWidth).toBeLessThanOrEqual(metrics.clientWidth + 1)
+})
+
+test('below-grade boring animation scrubs on desktop and falls back on mobile motion settings', async ({
+  browser,
+}) => {
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } })
+  await page.goto('/test')
+
+  const sectionMetrics = await page.locator('.bore-scroll-section').evaluate((section) => {
+    const rect = section.getBoundingClientRect()
+    return {
+      y: rect.top + window.scrollY,
+      height: rect.height,
+      viewport: window.innerHeight,
+    }
+  })
+
+  await page.evaluate(
+    ({ y, height, viewport }) => window.scrollTo(0, y + (height - viewport) * 0.5),
+    sectionMetrics,
+  )
+  await expect(page.locator('.bore-beats .is-active')).toContainText(
+    'Existing utilities stay visible in the plan.',
+  )
+  await expect(page.locator('.bore-sticky')).toBeInViewport()
+
+  const canvasHasPixels = await page.locator('.bore-stage canvas').evaluate((canvas) => {
+    const htmlCanvas = canvas as HTMLCanvasElement
+    const context = htmlCanvas.getContext('2d')
+    if (!context) return false
+    const pixels = context.getImageData(
+      Math.floor(htmlCanvas.width / 2),
+      Math.floor(htmlCanvas.height / 2),
+      4,
+      4,
+    ).data
+    return Array.from(pixels).some((value, index) => index % 4 !== 3 && value > 0)
+  })
+  expect(canvasHasPixels).toBe(true)
+  await page.close()
+
+  const mobile = await browser.newPage({
+    viewport: { width: 390, height: 844 },
+    isMobile: true,
+  })
+  await mobile.goto('/test')
+  await expect(mobile.locator('.bore-scroll-section')).toHaveAttribute('data-static', 'true')
+  const mobileMetrics = await mobile.evaluate(() => ({
+    scrollWidth: document.documentElement.scrollWidth,
+    clientWidth: document.documentElement.clientWidth,
+  }))
+  expect(mobileMetrics.scrollWidth).toBeLessThanOrEqual(mobileMetrics.clientWidth + 1)
+  await mobile.close()
 })

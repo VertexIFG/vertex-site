@@ -248,8 +248,8 @@ function TestPage() {
               <img src="/assets/vertex-logo-wordmark.png" alt="Vertex Infrastructure Group" />
             </a>
             <h2>
-              <span>Vertex</span>
-              <span>Infrastructure</span>
+              <span>Vertex </span>
+              <span>Infrastructure </span>
               <span>Group, LLC</span>
             </h2>
             <p>Trenchless utility infrastructure built with field discipline, clean records, and modern project communication.</p>

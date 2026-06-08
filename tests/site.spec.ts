@@ -101,11 +101,10 @@ test('local test page renders as a design workbench', async ({ page }) => {
   ).toBeVisible()
   await expect(page.getByRole('heading', { name: /Underground utility work is won/i })).toBeVisible()
   await expect(page.getByRole('heading', { name: /Equipment depth for utility work/i })).toBeVisible()
-  await expect(page.getByRole('heading', { name: /Below grade, the route stays visible/i })).toBeVisible()
-  await expect(page.locator('.bore-stage canvas')).toBeVisible()
+  await expect(page.locator('.bore-hero-section')).toBeVisible()
+  await expect(page.locator('.bore-hero-canvas')).toBeVisible()
   await expect(page.locator('.test-command-panel')).toHaveCount(0)
-  await expect(page.locator('.hero-photo img')).toHaveAttribute('src', '/assets/dbc-field-truck.jpg')
-  await expect(page.locator('.hero-photo img')).toBeVisible()
+  await expect(page.locator('.hero-photo')).toHaveCount(0)
   await expect(page.getByRole('img', { name: /Field crew installing/i })).toBeVisible()
   await expect(page.locator('img[src="/assets/dbc-service-truck.jpeg"]')).toBeVisible()
   await expect(page.locator('.equipment-runway img')).toHaveCount(3)
@@ -149,7 +148,7 @@ test('below-grade boring animation scrubs on desktop and falls back on mobile mo
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } })
   await page.goto('/test')
 
-  const sectionMetrics = await page.locator('.bore-scroll-section').evaluate((section) => {
+  const sectionMetrics = await page.locator('.bore-hero-section').evaluate((section) => {
     const rect = section.getBoundingClientRect()
     return {
       y: rect.top + window.scrollY,
@@ -162,12 +161,12 @@ test('below-grade boring animation scrubs on desktop and falls back on mobile mo
     ({ y, height, viewport }) => window.scrollTo(0, y + (height - viewport) * 0.5),
     sectionMetrics,
   )
-  await expect(page.locator('.bore-beats .is-active')).toContainText(
-    'Existing utilities stay visible in the plan.',
+  await expect(page.locator('.bore-hero-beats .is-active')).toContainText(
+    'The drill head cuts below active utilities.',
   )
-  await expect(page.locator('.bore-sticky')).toBeInViewport()
+  await expect(page.locator('.bore-hero-sticky')).toBeInViewport()
 
-  const canvasHasPixels = await page.locator('.bore-stage canvas').evaluate((canvas) => {
+  const canvasHasPixels = await page.locator('.bore-hero-canvas').evaluate((canvas) => {
     const htmlCanvas = canvas as HTMLCanvasElement
     const context = htmlCanvas.getContext('2d')
     if (!context) return false
@@ -187,7 +186,7 @@ test('below-grade boring animation scrubs on desktop and falls back on mobile mo
     isMobile: true,
   })
   await mobile.goto('/test')
-  await expect(mobile.locator('.bore-scroll-section')).toHaveAttribute('data-static', 'true')
+  await expect(mobile.locator('.bore-hero-section')).toHaveAttribute('data-static', 'true')
   const mobileMetrics = await mobile.evaluate(() => ({
     scrollWidth: document.documentElement.scrollWidth,
     clientWidth: document.documentElement.clientWidth,

@@ -1,46 +1,33 @@
+import { ArrowUpRight } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 
 const beats = [
   {
     range: '00-01',
     title: 'Plan the route before the first cut.',
-    body: 'Surface access, stations, depths, and existing utility windows are mapped before equipment moves.',
+    body: 'The surface plan, entry angle, depth window, and existing utilities are visible before the drill moves.',
   },
   {
     range: '01-02',
-    title: 'Directional drilling reduces surface disruption.',
-    body: 'The entry angle sends the drill path below the worksite while the road surface stays intact.',
+    title: 'The ground opens into the work below.',
+    body: 'The hero transitions from surface operation to below-grade cutaway without leaving the first visual moment.',
   },
   {
     range: '02-03',
-    title: 'Existing utilities stay visible in the plan.',
-    body: 'Electric, gas, communications, water, and drainage stay legible as the bore passes below them.',
+    title: 'The drill head cuts below active utilities.',
+    body: 'Electric, gas, water, and fiber remain visible while the head rotates through the planned clearance path.',
   },
   {
     range: '03-04',
-    title: 'The route becomes an installed utility pathway.',
-    body: 'Pullback converts the pilot bore into a clean conduit route ready for the new utility.',
+    title: 'Pullback turns the bore into a pathway.',
+    body: 'Conduit follows the completed bore, resolving into a clean Vertex red utility route.',
   },
   {
     range: '04-05',
     title: 'Built below grade. Documented above it.',
-    body: 'Depth, station, utility, and closeout records resolve into a finished field package.',
+    body: 'The final pathway, stations, depth marks, and closeout notes lock into the finished view.',
   },
 ]
-
-const clamp = (value: number, min = 0, max = 1) => Math.min(max, Math.max(min, value))
-const easeOut = (value: number) => 1 - Math.pow(1 - clamp(value), 3)
-const easeInOut = (value: number) => {
-  const t = clamp(value)
-  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
-}
-const beatFromProgress = (progress: number) => {
-  if (progress < 0.12) return 0
-  if (progress < 0.3) return 1
-  if (progress < 0.58) return 2
-  if (progress < 0.82) return 3
-  return 4
-}
 
 type Point = {
   x: number
@@ -52,6 +39,21 @@ type SceneSize = {
   height: number
 }
 
+const clamp = (value: number, min = 0, max = 1) => Math.min(max, Math.max(min, value))
+const easeOut = (value: number) => 1 - Math.pow(1 - clamp(value), 3)
+const easeInOut = (value: number) => {
+  const t = clamp(value)
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
+}
+
+const beatFromProgress = (progress: number) => {
+  if (progress < 0.12) return 0
+  if (progress < 0.3) return 1
+  if (progress < 0.58) return 2
+  if (progress < 0.82) return 3
+  return 4
+}
+
 function cubicPoint(t: number, p0: Point, p1: Point, p2: Point, p3: Point) {
   const mt = 1 - t
   return {
@@ -60,12 +62,12 @@ function cubicPoint(t: number, p0: Point, p1: Point, p2: Point, p3: Point) {
   }
 }
 
-function routeSamples(size: SceneSize, count = 140) {
+function routeSamples(size: SceneSize, surfaceY: number, count = 180) {
   const { width, height } = size
-  const p0 = { x: width * 0.18, y: height * 0.305 }
-  const p1 = { x: width * 0.27, y: height * 0.56 }
-  const p2 = { x: width * 0.58, y: height * 0.61 }
-  const p3 = { x: width * 0.84, y: height * 0.48 }
+  const p0 = { x: width * 0.68, y: surfaceY - height * 0.015 }
+  const p1 = { x: width * 0.62, y: surfaceY + height * 0.22 }
+  const p2 = { x: width * 0.34, y: surfaceY + height * 0.36 }
+  const p3 = { x: width * 0.16, y: surfaceY + height * 0.24 }
   return Array.from({ length: count }, (_, index) => cubicPoint(index / (count - 1), p0, p1, p2, p3))
 }
 
@@ -80,16 +82,7 @@ function drawPath(ctx: CanvasRenderingContext2D, points: Point[], progress = 1) 
 }
 
 function pointAt(points: Point[], progress: number) {
-  const index = Math.round((points.length - 1) * clamp(progress))
-  return points[index]
-}
-
-function drawLabel(ctx: CanvasRenderingContext2D, text: string, x: number, y: number, color = '#f8f6f1') {
-  ctx.save()
-  ctx.font = '700 12px Inter, system-ui, sans-serif'
-  ctx.fillStyle = color
-  ctx.fillText(text, x, y)
-  ctx.restore()
+  return points[Math.round((points.length - 1) * clamp(progress))]
 }
 
 function drawRoundedRect(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number) {
@@ -107,38 +100,135 @@ function drawRoundedRect(ctx: CanvasRenderingContext2D, x: number, y: number, wi
   ctx.closePath()
 }
 
-function drawScene(ctx: CanvasRenderingContext2D, size: SceneSize, rawProgress: number, reducedMotion: boolean) {
-  const progress = reducedMotion ? 0.92 : clamp(rawProgress)
+function drawLabel(ctx: CanvasRenderingContext2D, text: string, x: number, y: number, color = '#f8f6f1', size = 12) {
+  ctx.save()
+  ctx.font = `850 ${size}px Inter, system-ui, sans-serif`
+  ctx.fillStyle = color
+  ctx.fillText(text, x, y)
+  ctx.restore()
+}
+
+function drawBoringRig(ctx: CanvasRenderingContext2D, size: SceneSize, surfaceY: number, progress: number) {
   const { width, height } = size
-  const compact = width < 640
-  const surfaceY = height * 0.27
-  const samples = routeSamples(size)
-  const planProgress = easeOut(progress / 0.14)
-  const drillProgress = easeInOut((progress - 0.12) / 0.48)
-  const utilityOpacity = 0.32 + 0.68 * easeOut((progress - 0.22) / 0.24)
-  const conduitProgress = easeInOut((progress - 0.58) / 0.28)
-  const closeoutProgress = easeOut((progress - 0.82) / 0.18)
+  const rigScale = Math.min(width, height) / 900
+  const x = width * 0.73
+  const y = surfaceY - 118 * rigScale
+  const vibration = Math.sin(progress * 70) * 1.4 * clamp((progress - 0.18) / 0.16)
+
+  ctx.save()
+  ctx.translate(x, y + vibration)
+  ctx.scale(rigScale, rigScale)
+
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.34)'
+  ctx.beginPath()
+  ctx.ellipse(118, 142, 196, 24, 0, 0, Math.PI * 2)
+  ctx.fill()
+
+  ctx.fillStyle = '#070809'
+  drawRoundedRect(ctx, -12, 98, 315, 56, 10)
+  ctx.fill()
+  ctx.fillStyle = '#1d232a'
+  drawRoundedRect(ctx, 6, 106, 278, 36, 18)
+  ctx.fill()
+  ctx.strokeStyle = '#4a5158'
+  ctx.lineWidth = 6
+  for (let i = 0; i < 7; i += 1) {
+    ctx.beginPath()
+    ctx.arc(35 + i * 36, 124, 11, 0, Math.PI * 2)
+    ctx.stroke()
+  }
+
+  ctx.fillStyle = '#d9dde0'
+  drawRoundedRect(ctx, 34, 26, 215, 76, 12)
+  ctx.fill()
+  ctx.fillStyle = '#bfc5c9'
+  drawRoundedRect(ctx, 170, 2, 78, 72, 10)
+  ctx.fill()
+  ctx.fillStyle = '#2a3036'
+  drawRoundedRect(ctx, 186, 14, 42, 30, 6)
+  ctx.fill()
+  ctx.fillStyle = '#e5091b'
+  ctx.fillRect(62, 58, 88, 10)
+  ctx.fillStyle = '#070809'
+  ctx.fillRect(62, 76, 142, 8)
+
+  ctx.save()
+  ctx.translate(38, 100)
+  ctx.rotate(-0.96)
+  ctx.fillStyle = '#14181d'
+  drawRoundedRect(ctx, -14, -12, 310, 24, 12)
+  ctx.fill()
+  ctx.fillStyle = '#e5091b'
+  ctx.fillRect(112, -3, 128, 6)
+  ctx.restore()
+
+  ctx.strokeStyle = '#f8f6f1'
+  ctx.globalAlpha = 0.55
+  ctx.lineWidth = 2
+  ctx.beginPath()
+  ctx.moveTo(66, 30)
+  ctx.lineTo(140, 30)
+  ctx.stroke()
+  ctx.globalAlpha = 1
+  ctx.restore()
+}
+
+function drawDrillHead(ctx: CanvasRenderingContext2D, point: Point, next: Point, size: SceneSize, progress: number) {
+  const angle = Math.atan2(next.y - point.y, next.x - point.x)
+  const scale = Math.min(size.width, size.height) / 900
+  ctx.save()
+  ctx.translate(point.x, point.y)
+  ctx.rotate(angle)
+  ctx.scale(scale, scale)
+  ctx.fillStyle = '#070809'
+  drawRoundedRect(ctx, -33, -16, 62, 32, 15)
+  ctx.fill()
+  ctx.fillStyle = '#e5091b'
+  ctx.beginPath()
+  ctx.moveTo(-44, 0)
+  ctx.lineTo(-10, -24)
+  ctx.lineTo(-10, 24)
+  ctx.closePath()
+  ctx.fill()
+  ctx.strokeStyle = '#f8f6f1'
+  ctx.lineWidth = 3
+  ctx.beginPath()
+  ctx.arc(14, 0, 19, progress * 28, progress * 28 + Math.PI * 1.35)
+  ctx.stroke()
+  ctx.restore()
+}
+
+function drawHeroScene(ctx: CanvasRenderingContext2D, size: SceneSize, rawProgress: number, staticMode: boolean) {
+  const progress = staticMode ? 0.82 : clamp(rawProgress)
+  const { width, height } = size
+  const compact = width < 680
+  const cutaway = easeInOut((progress - 0.08) / 0.22)
+  const drillMotion = easeInOut((progress - 0.22) / 0.42)
+  const conduit = easeInOut((progress - 0.62) / 0.24)
+  const closeout = easeOut((progress - 0.84) / 0.16)
+  const surfaceY = height * (compact ? 0.34 : 0.58) - height * (compact ? 0.04 : 0.24) * cutaway
+  const samples = routeSamples(size, surfaceY)
 
   ctx.clearRect(0, 0, width, height)
 
-  const bg = ctx.createLinearGradient(0, 0, 0, height)
-  bg.addColorStop(0, '#0a0c0f')
-  bg.addColorStop(0.22, '#111418')
-  bg.addColorStop(1, '#070809')
-  ctx.fillStyle = bg
+  const sky = ctx.createLinearGradient(0, 0, 0, height)
+  sky.addColorStop(0, '#08090b')
+  sky.addColorStop(0.45, '#111418')
+  sky.addColorStop(1, '#070809')
+  ctx.fillStyle = sky
   ctx.fillRect(0, 0, width, height)
 
   ctx.save()
-  ctx.globalAlpha = 0.28
+  ctx.globalAlpha = 0.24
   ctx.strokeStyle = '#f8f6f1'
   ctx.lineWidth = 1
-  for (let x = 0; x < width; x += 58) {
+  for (let x = 0; x < width; x += compact ? 46 : 66) {
     ctx.beginPath()
     ctx.moveTo(x, 0)
     ctx.lineTo(x, height)
     ctx.stroke()
   }
-  for (let y = 0; y < height; y += 58) {
+  for (let y = 0; y < height; y += compact ? 46 : 66) {
     ctx.beginPath()
     ctx.moveTo(0, y)
     ctx.lineTo(width, y)
@@ -146,236 +236,166 @@ function drawScene(ctx: CanvasRenderingContext2D, size: SceneSize, rawProgress: 
   }
   ctx.restore()
 
-  ctx.fillStyle = '#2e3338'
-  ctx.fillRect(0, 0, width, surfaceY)
-  ctx.fillStyle = '#171a1f'
-  ctx.fillRect(0, surfaceY - height * 0.055, width, height * 0.055)
-  ctx.strokeStyle = '#f8f6f1'
-  ctx.globalAlpha = 0.16
+  ctx.fillStyle = '#2f353b'
+  ctx.fillRect(0, surfaceY - height * 0.08, width, height * 0.08)
+  ctx.fillStyle = '#15191e'
+  ctx.fillRect(0, surfaceY - height * 0.026, width, height * 0.026)
+  ctx.strokeStyle = 'rgba(248, 246, 241, 0.22)'
   ctx.lineWidth = 2
-  for (let x = -width * 0.2; x < width; x += width * 0.18) {
+  for (let x = -80; x < width; x += compact ? 92 : 150) {
     ctx.beginPath()
-    ctx.moveTo(x, surfaceY - height * 0.035)
-    ctx.lineTo(x + width * 0.1, surfaceY - height * 0.035)
+    ctx.moveTo(x, surfaceY - height * 0.045)
+    ctx.lineTo(x + (compact ? 54 : 82), surfaceY - height * 0.045)
     ctx.stroke()
   }
-  ctx.globalAlpha = 1
 
-  const layers = [
-    ['#d7d0c5', surfaceY, height * 0.18],
-    ['#b8b0a6', surfaceY + height * 0.18, height * 0.17],
-    ['#8f8a83', surfaceY + height * 0.35, height * 0.19],
-    ['#6b6b68', surfaceY + height * 0.54, height * 0.19],
-  ] as const
-
-  layers.forEach(([color, y, layerHeight], index) => {
+  const soilTop = surfaceY
+  const layerHeight = (height - soilTop) / 4
+  const soilColors = ['#d6d0c5', '#aaa49b', '#85827c', '#5d5f5d']
+  soilColors.forEach((color, index) => {
+    const y = soilTop + index * layerHeight
+    ctx.globalAlpha = 0.12 + cutaway * 0.88
     ctx.fillStyle = color
-    ctx.globalAlpha = 0.9 - index * 0.08
     ctx.beginPath()
     ctx.moveTo(0, y)
     for (let x = 0; x <= width; x += width / 18) {
-      ctx.lineTo(x, y + Math.sin(x * 0.009 + index) * height * 0.008)
+      ctx.lineTo(x, y + Math.sin(index + x * 0.008) * height * 0.006)
     }
-    ctx.lineTo(width, y + layerHeight)
-    ctx.lineTo(0, y + layerHeight)
+    ctx.lineTo(width, y + layerHeight + 3)
+    ctx.lineTo(0, y + layerHeight + 3)
     ctx.closePath()
     ctx.fill()
   })
   ctx.globalAlpha = 1
 
-  ctx.save()
-  ctx.globalAlpha = 0.2
-  ctx.strokeStyle = '#070809'
-  ctx.lineWidth = 1
-  for (let index = 0; index < 120; index += 1) {
-    const x = (index * 73) % width
-    const y = surfaceY + ((index * 47) % Math.round(height - surfaceY))
-    ctx.beginPath()
-    ctx.moveTo(x, y)
-    ctx.lineTo(x + 14, y + Math.sin(index) * 3)
-    ctx.stroke()
+  if (cutaway > 0.08) {
+    ctx.save()
+    ctx.globalAlpha = cutaway * 0.26
+    ctx.strokeStyle = '#070809'
+    for (let index = 0; index < 110; index += 1) {
+      const x = (index * 83) % width
+      const y = soilTop + ((index * 47) % Math.max(1, height - soilTop))
+      ctx.beginPath()
+      ctx.moveTo(x, y)
+      ctx.lineTo(x + 13, y + Math.sin(index) * 3)
+      ctx.stroke()
+    }
+    ctx.restore()
   }
-  ctx.restore()
 
   const utilities = [
-    { y: height * 0.39, color: '#e5091b', label: 'ELECTRIC', x1: width * 0.1, x2: width * 0.46 },
-    { y: height * 0.44, color: '#f3c634', label: 'GAS', x1: width * 0.55, x2: width * 0.92 },
-    { y: height * 0.51, color: '#f47b20', label: 'FIBER', x1: width * 0.12, x2: width * 0.34 },
-    { y: height * 0.57, color: '#2e8fff', label: 'WATER', x1: width * 0.66, x2: width * 0.95 },
-    { y: height * 0.67, color: '#2da665', label: 'DRAIN', x1: width * 0.16, x2: width * 0.48 },
+    { label: 'ELECTRIC', color: '#e5091b', y: soilTop + layerHeight * 0.55, x1: width * 0.08, x2: width * 0.46 },
+    { label: 'GAS', color: '#f3c634', y: soilTop + layerHeight * 1.02, x1: width * 0.54, x2: width * 0.93 },
+    { label: 'FIBER', color: '#f47b20', y: soilTop + layerHeight * 1.42, x1: width * 0.1, x2: width * 0.39 },
+    { label: 'WATER', color: '#2e8fff', y: soilTop + layerHeight * 1.86, x1: width * 0.59, x2: width * 0.95 },
   ]
-
   utilities.forEach((utility) => {
     ctx.save()
-    ctx.globalAlpha = utilityOpacity
+    ctx.globalAlpha = cutaway
     ctx.strokeStyle = utility.color
-    ctx.lineWidth = Math.max(5, height * 0.008)
+    ctx.lineWidth = compact ? 4 : 7
     ctx.lineCap = 'round'
     ctx.beginPath()
     ctx.moveTo(utility.x1, utility.y)
     ctx.lineTo(utility.x2, utility.y)
     ctx.stroke()
-    ctx.globalAlpha = 0.95 * utilityOpacity
-    drawLabel(ctx, utility.label, utility.x1, utility.y - 12, utility.color)
+    drawLabel(ctx, utility.label, utility.x1, utility.y - 11, utility.color, compact ? 9 : 12)
     ctx.restore()
   })
 
   ctx.save()
-  ctx.globalAlpha = 0.76
-  ctx.strokeStyle = '#111418'
-  ctx.lineWidth = 1
-  for (let index = 0; index < 7; index += 1) {
-    const x = width * (0.15 + index * 0.115)
-    ctx.beginPath()
-    ctx.moveTo(x, surfaceY + height * 0.03)
-    ctx.lineTo(x, height * 0.92)
-    ctx.stroke()
-    ctx.fillStyle = '#111418'
-    ctx.font = `${compact ? '800 9px' : '800 11px'} Inter, system-ui, sans-serif`
-    if (!compact || index % 2 === 0) {
-      ctx.fillText(`STA ${String(index + 1).padStart(2, '0')}`, x + 7, surfaceY + height * 0.06)
-    }
-  }
-  for (let index = 1; index <= 5; index += 1) {
-    if (compact && index !== 1 && index !== 3 && index !== 5) {
-      continue
-    }
-    const y = surfaceY + height * (0.12 * index)
-    ctx.beginPath()
-    ctx.moveTo(width * 0.04, y)
-    ctx.lineTo(width * 0.095, y)
-    ctx.stroke()
-    ctx.fillText(`${index * 4} FT`, width * 0.045, y - 8)
-  }
-  ctx.restore()
-
-  ctx.save()
-  ctx.lineCap = 'round'
-  ctx.strokeStyle = 'rgba(229, 9, 27, 0.28)'
-  ctx.lineWidth = Math.max(10, height * 0.018)
-  drawPath(ctx, samples, planProgress)
+  ctx.globalAlpha = 0.18 + cutaway * 0.82
   ctx.strokeStyle = '#e5091b'
-  ctx.lineWidth = Math.max(4, height * 0.007)
-  drawPath(ctx, samples, Math.max(planProgress, drillProgress * 0.9))
+  ctx.lineWidth = compact ? 3 : 5
+  ctx.lineCap = 'round'
+  drawPath(ctx, samples, Math.max(0.18, drillMotion * 0.92))
   ctx.restore()
 
-  if (conduitProgress > 0) {
+  if (conduit > 0) {
     ctx.save()
     ctx.lineCap = 'round'
     ctx.strokeStyle = '#f8f6f1'
-    ctx.lineWidth = Math.max(7, height * 0.011)
-    drawPath(ctx, samples, conduitProgress)
+    ctx.lineWidth = compact ? 5 : 10
+    drawPath(ctx, samples, conduit)
     ctx.strokeStyle = '#e5091b'
-    ctx.lineWidth = Math.max(3, height * 0.005)
-    drawPath(ctx, samples, conduitProgress)
+    ctx.lineWidth = compact ? 2 : 4
+    drawPath(ctx, samples, conduit)
     ctx.restore()
   }
 
-  const rigX = width * 0.075
-  const rigY = surfaceY - height * 0.12
-  ctx.save()
-  ctx.fillStyle = '#070809'
-  drawRoundedRect(ctx, rigX, rigY + height * 0.055, width * 0.13, height * 0.048, 5)
-  ctx.fill()
-  ctx.fillStyle = '#d5d8da'
-  drawRoundedRect(ctx, rigX + width * 0.022, rigY + height * 0.012, width * 0.11, height * 0.055, 6)
-  ctx.fill()
-  ctx.fillStyle = '#e5091b'
-  ctx.fillRect(rigX + width * 0.034, rigY + height * 0.032, width * 0.045, height * 0.01)
-  ctx.strokeStyle = '#111418'
-  ctx.lineWidth = Math.max(5, height * 0.009)
-  ctx.beginPath()
-  ctx.moveTo(rigX + width * 0.118, rigY + height * 0.058)
-  ctx.lineTo(samples[0].x, samples[0].y)
-  ctx.stroke()
-  if (!compact) {
-    ctx.fillStyle = '#f8f6f1'
-    ctx.font = '900 11px Inter, system-ui, sans-serif'
-    ctx.fillText('VERTEX RIG', rigX + width * 0.026, rigY + height * 0.049)
-  }
-  ctx.restore()
-
-  if (progress > 0.12 && conduitProgress < 0.98) {
-    const head = pointAt(samples, drillProgress)
-    const next = pointAt(samples, Math.min(1, drillProgress + 0.02))
-    const angle = Math.atan2(next.y - head.y, next.x - head.x)
+  if (cutaway > 0.2) {
     ctx.save()
-    ctx.translate(head.x, head.y)
-    ctx.rotate(angle)
-    ctx.fillStyle = '#111418'
-    drawRoundedRect(ctx, -width * 0.021, -height * 0.012, width * 0.05, height * 0.024, height * 0.012)
-    ctx.fill()
-    ctx.fillStyle = '#e5091b'
-    ctx.beginPath()
-    ctx.moveTo(width * 0.03, 0)
-    ctx.lineTo(width * 0.005, -height * 0.018)
-    ctx.lineTo(width * 0.005, height * 0.018)
-    ctx.closePath()
-    ctx.fill()
-    ctx.strokeStyle = 'rgba(248, 246, 241, 0.9)'
-    ctx.lineWidth = 2
-    ctx.beginPath()
-    ctx.arc(-width * 0.008, 0, height * 0.017, progress * 24, progress * 24 + Math.PI * 1.25)
-    ctx.stroke()
-    ctx.restore()
-
-    ctx.save()
-    ctx.fillStyle = 'rgba(7, 8, 9, 0.25)'
-    for (let index = 0; index < 10; index += 1) {
-      const offset = index * 0.19 + progress * 8
+    ctx.globalAlpha = cutaway * 0.8
+    ctx.strokeStyle = '#111418'
+    ctx.lineWidth = 1
+    const tickCount = compact ? 4 : 7
+    for (let index = 0; index < tickCount; index += 1) {
+      const x = width * (0.12 + index * (compact ? 0.21 : 0.12))
       ctx.beginPath()
-      ctx.arc(head.x - Math.cos(angle) * (18 + index * 3), head.y + Math.sin(offset) * 10, 2 + (index % 3), 0, Math.PI * 2)
+      ctx.moveTo(x, soilTop + 18)
+      ctx.lineTo(x, height * 0.92)
+      ctx.stroke()
+      drawLabel(ctx, `STA ${String(index + 1).padStart(2, '0')}`, x + 5, soilTop + 36, '#111418', compact ? 8 : 10)
+    }
+    for (let index = 1; index <= 4; index += 1) {
+      const y = soilTop + index * layerHeight * 0.78
+      ctx.beginPath()
+      ctx.moveTo(width * 0.035, y)
+      ctx.lineTo(width * 0.085, y)
+      ctx.stroke()
+      drawLabel(ctx, `${index * 4} FT`, width * 0.04, y - 7, '#111418', compact ? 8 : 10)
+    }
+    ctx.restore()
+  }
+
+  drawBoringRig(ctx, size, surfaceY, progress)
+
+  if (progress > 0.18 && conduit < 0.98) {
+    const head = pointAt(samples, drillMotion)
+    const next = pointAt(samples, Math.min(1, drillMotion + 0.02))
+    drawDrillHead(ctx, head, next, size, progress)
+    ctx.save()
+    ctx.fillStyle = 'rgba(7, 8, 9, 0.28)'
+    for (let index = 0; index < 18; index += 1) {
+      const drift = index * 0.2 + progress * 12
+      ctx.beginPath()
+      ctx.arc(head.x + Math.cos(drift) * 14 - index * 2, head.y + Math.sin(drift) * 10, compact ? 1.4 : 2.4, 0, Math.PI * 2)
       ctx.fill()
     }
     ctx.restore()
   }
 
-  ctx.save()
-  ctx.globalAlpha = 0.75 + closeoutProgress * 0.25
-  ctx.strokeStyle = '#f8f6f1'
-  ctx.lineWidth = 1
-  const callouts = compact
-    ? [
-        { text: 'CLEARANCE', x: width * 0.46, y: height * 0.48, tx: width * 0.52, ty: height * 0.38 },
-        { text: 'PULLBACK', x: width * 0.66, y: height * 0.53, tx: width * 0.68, ty: height * 0.7 },
-        { text: 'DEPTH LOG', x: width * 0.72, y: height * 0.76, tx: width * 0.58, ty: height * 0.72 },
-      ]
-    : [
-        { text: 'CLEARANCE WINDOW', x: width * 0.45, y: height * 0.47, tx: width * 0.53, ty: height * 0.38 },
-        { text: 'PULLBACK PATH', x: width * 0.69, y: height * 0.52, tx: width * 0.72, ty: height * 0.68 },
-        { text: 'CLOSEOUT DEPTH LOG', x: width * 0.78, y: height * 0.78, tx: width * 0.62, ty: height * 0.72 },
-      ]
-  callouts.forEach((item, index) => {
-    const alpha = clamp((progress - (0.28 + index * 0.18)) / 0.16)
-    ctx.globalAlpha = alpha
-    ctx.beginPath()
-    ctx.moveTo(item.x, item.y)
-    ctx.lineTo(item.tx, item.ty)
-    ctx.stroke()
-    drawLabel(ctx, item.text, item.tx + 8, item.ty + 4, index === 1 ? '#e5091b' : '#111418')
-  })
-  ctx.restore()
-
-  ctx.save()
-  ctx.globalAlpha = 0.9
-  ctx.fillStyle = '#e5091b'
-  for (let index = 0; index < 7; index += 1) {
-    const x = width * (0.16 + index * 0.105)
-    ctx.beginPath()
-    ctx.moveTo(x, surfaceY - height * 0.09)
-    ctx.lineTo(x + width * 0.012, surfaceY - height * 0.067)
-    ctx.lineTo(x, surfaceY - height * 0.067)
-    ctx.closePath()
-    ctx.fill()
-    ctx.fillRect(x, surfaceY - height * 0.067, 2, height * 0.045)
+  if (cutaway > 0.55) {
+    const callouts = compact
+      ? [
+          ['CLEARANCE', width * 0.43, soilTop + layerHeight * 1.08, width * 0.5, soilTop + layerHeight * 0.72],
+          ['PULLBACK', width * 0.62, soilTop + layerHeight * 1.9, width * 0.67, soilTop + layerHeight * 2.38],
+        ]
+      : [
+          ['UTILITY CLEARANCE WINDOW', width * 0.47, soilTop + layerHeight * 1.1, width * 0.56, soilTop + layerHeight * 0.72],
+          ['VERTEX RED INSTALLED ROUTE', width * 0.58, soilTop + layerHeight * 1.85, width * 0.62, soilTop + layerHeight * 2.46],
+          ['CLOSEOUT DEPTH LOG', width * 0.7, soilTop + layerHeight * 2.65, width * 0.58, soilTop + layerHeight * 2.35],
+        ]
+    ctx.save()
+    ctx.strokeStyle = 'rgba(248, 246, 241, 0.78)'
+    ctx.lineWidth = 1
+    callouts.forEach(([text, x, y, tx, ty], index) => {
+      const alpha = index === 0 ? cutaway : closeout || conduit
+      ctx.globalAlpha = alpha
+      ctx.beginPath()
+      ctx.moveTo(x as number, y as number)
+      ctx.lineTo(tx as number, ty as number)
+      ctx.stroke()
+      drawLabel(ctx, text as string, (tx as number) + 8, (ty as number) + 4, index === 1 ? '#e5091b' : '#f8f6f1', compact ? 9 : 11)
+    })
+    ctx.restore()
   }
-  ctx.restore()
 
   ctx.save()
-  ctx.globalAlpha = 0.18 + closeoutProgress * 0.22
+  ctx.globalAlpha = 0.18 + closeout * 0.32
   ctx.strokeStyle = '#e5091b'
   ctx.lineWidth = 2
-  ctx.strokeRect(width * 0.035, height * 0.055, width * 0.93, height * 0.875)
+  ctx.strokeRect(width * 0.035, soilTop + height * 0.035, width * 0.93, height - soilTop - height * 0.075)
   ctx.restore()
 }
 
@@ -414,24 +434,23 @@ export default function BelowGradeBore() {
   const reducedMotion = useReducedMotion()
   const isMobile = useIsMobile()
   const [activeBeat, setActiveBeat] = useState(0)
+  const [progressState, setProgressState] = useState(0)
 
   useEffect(() => {
     const canvas = canvasRef.current
     const section = sectionRef.current
-    if (!canvas || !section) {
-      return undefined
-    }
+    if (!canvas || !section) return undefined
 
     const ctx = canvas.getContext('2d')
-    if (!ctx) {
-      return undefined
-    }
+    if (!ctx) return undefined
 
-    let frame = 0
-    let width = 0
-    let height = 0
+    let raf = 0
+    let width = 1
+    let height = 1
 
-    const setCanvasSize = () => {
+    const staticMode = reducedMotion || isMobile
+
+    const resize = () => {
       const rect = canvas.getBoundingClientRect()
       const dpr = Math.min(window.devicePixelRatio || 1, 2)
       width = Math.max(1, Math.floor(rect.width))
@@ -439,13 +458,14 @@ export default function BelowGradeBore() {
       canvas.width = Math.floor(width * dpr)
       canvas.height = Math.floor(height * dpr)
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-      drawScene(ctx, { width, height }, progressRef.current, reducedMotion || isMobile)
+      drawHeroScene(ctx, { width, height }, progressRef.current, staticMode)
     }
 
-    const updateProgress = () => {
-      if (reducedMotion || isMobile) {
-        progressRef.current = 0.92
+    const update = () => {
+      if (staticMode) {
+        progressRef.current = 0.86
         setActiveBeat(4)
+        setProgressState(0)
         return
       }
 
@@ -454,52 +474,74 @@ export default function BelowGradeBore() {
       const progress = clamp(-rect.top / travel)
       progressRef.current = progress
       setActiveBeat(beatFromProgress(progress))
+      setProgressState(progress)
     }
 
     const render = () => {
-      updateProgress()
-      drawScene(ctx, { width, height }, progressRef.current, reducedMotion || isMobile)
-      frame = window.requestAnimationFrame(render)
+      update()
+      drawHeroScene(ctx, { width, height }, progressRef.current, staticMode)
+      raf = window.requestAnimationFrame(render)
     }
 
-    setCanvasSize()
-    updateProgress()
+    resize()
     render()
+    window.addEventListener('resize', resize)
 
-    window.addEventListener('resize', setCanvasSize)
     return () => {
-      window.cancelAnimationFrame(frame)
-      window.removeEventListener('resize', setCanvasSize)
+      window.cancelAnimationFrame(raf)
+      window.removeEventListener('resize', resize)
     }
   }, [isMobile, reducedMotion])
+
+  const staticMode = isMobile || reducedMotion
+  const introExit = clamp((progressState - 0.04) / 0.22)
+  const copyFade = staticMode ? 1 : 1 - introExit
+  const copyShift = staticMode ? 0 : -52 * introExit
 
   return (
     <section
       ref={sectionRef}
-      className="bore-scroll-section"
-      aria-labelledby="bore-scroll-title"
-      data-static={isMobile || reducedMotion ? 'true' : 'false'}
+      className="bore-hero-section"
+      aria-labelledby="hero-title"
+      data-static={staticMode ? 'true' : 'false'}
     >
-      <div className="bore-sticky">
-        <div className="bore-copy">
-          <span className="bore-kicker">Below-grade route control</span>
-          <h2 id="bore-scroll-title">Below grade, the route stays visible.</h2>
-          <div className="bore-beats" aria-label="Boring animation story beats">
-            {beats.map((beat, index) => (
-              <article className={activeBeat === index ? 'is-active' : ''} key={beat.title}>
-                <span>{beat.range}</span>
-                <strong>{beat.title}</strong>
-                <p>{beat.body}</p>
-              </article>
-            ))}
+      <div className="bore-hero-sticky">
+        <canvas ref={canvasRef} className="bore-hero-canvas" aria-hidden="true" />
+        <div className="bore-hero-shade" aria-hidden="true" />
+        <div
+          className="bore-hero-copy"
+          style={{
+            opacity: copyFade,
+            visibility: !staticMode && copyFade <= 0.01 ? 'hidden' : 'visible',
+            transform: `translateY(${copyShift}px)`,
+          }}
+        >
+          <span className="bore-kicker">Below-grade utility infrastructure</span>
+          <h1 id="hero-title">Utility infrastructure, installed with field precision.</h1>
+          <p>
+            Vertex IFG supports fiber, gas, electric, and water projects with trenchless installation,
+            utility coordination, field documentation, and closeout discipline.
+          </p>
+          <div className="hero-actions">
+            <a className="button button-red" href="#contact">
+              Send project scope
+              <ArrowUpRight aria-hidden="true" />
+            </a>
+            <a className="button button-dark" href="#capabilities">
+              View capabilities
+            </a>
           </div>
         </div>
-        <div className="bore-stage" aria-hidden="true">
-          <canvas ref={canvasRef} />
-          <div className="bore-stage-label bore-label-surface">Road / worksite surface</div>
-          <div className="bore-stage-label bore-label-depth">Depth markers</div>
-          <div className="bore-stage-label bore-label-route">Vertex route line</div>
-        </div>
+
+        <aside className="bore-hero-beats" aria-label="Scroll animation sequence">
+          {beats.map((beat, index) => (
+            <article className={activeBeat === index ? 'is-active' : ''} key={beat.title}>
+              <span>{beat.range}</span>
+              <strong>{beat.title}</strong>
+              <p>{beat.body}</p>
+            </article>
+          ))}
+        </aside>
       </div>
     </section>
   )

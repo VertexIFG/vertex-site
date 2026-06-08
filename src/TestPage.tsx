@@ -1,5 +1,4 @@
-import { motion } from 'motion/react'
-import { ArrowUpRight, Mail, MapPin, Phone } from 'lucide-react'
+import { Mail, MapPin, Phone } from 'lucide-react'
 import BelowGradeBore from './components/BelowGradeBore'
 import './TestPage.css'
 
@@ -57,13 +56,6 @@ const scopeFields = [
   'Scope, plans, timing, and notes',
 ]
 
-const reveal = {
-  initial: false,
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: '-90px' },
-  transition: { duration: 0.75, ease: [0.16, 1, 0.3, 1] as const },
-}
-
 function TestPage() {
   return (
     <main className="vertex-page">
@@ -83,47 +75,7 @@ function TestPage() {
         </a>
       </header>
 
-      <section className="hero" aria-labelledby="hero-title">
-        <div className="hero-photo" aria-hidden="true">
-          <img src="/assets/dbc-field-truck.jpg" alt="" />
-        </div>
-        <div className="hero-scrim" aria-hidden="true" />
-        <div className="hero-route" aria-hidden="true">
-          <span />
-          <span />
-          <span />
-        </div>
-        <motion.div
-          className="hero-copy"
-          initial={{ opacity: 0, y: 34 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <h1 id="hero-title">Utility infrastructure, installed with field precision.</h1>
-          <p>
-            Vertex IFG supports fiber, gas, electric, and water projects with trenchless installation,
-            utility coordination, field documentation, and closeout discipline.
-          </p>
-          <div className="hero-actions">
-            <a className="button button-red" href="#contact">
-              Send project scope
-              <ArrowUpRight aria-hidden="true" />
-            </a>
-            <a className="button button-dark" href="#capabilities">
-              View capabilities
-            </a>
-          </div>
-        </motion.div>
-        <motion.aside
-          className="hero-proof"
-          initial={{ opacity: 0, x: 24 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.15, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <span>Field-proven operation</span>
-          <strong>Trenchless installation, support vehicles, vacuum excavation, and closeout records.</strong>
-        </motion.aside>
-      </section>
+      <BelowGradeBore />
 
       <section id="capabilities" className="capability-band" aria-label="Utility capabilities">
         {utilityLines.map(([title, body]) => (
@@ -134,9 +86,7 @@ function TestPage() {
         ))}
       </section>
 
-      <BelowGradeBore />
-
-      <motion.section id="field" className="field-section" {...reveal}>
+      <section id="field" className="field-section">
         <div className="field-image">
           <img src="/assets/dbc-service-truck.jpeg" alt="Vertex utility service truck" />
           <div className="image-station" aria-hidden="true">
@@ -156,9 +106,9 @@ function TestPage() {
             ))}
           </div>
         </div>
-      </motion.section>
+      </section>
 
-      <motion.section id="equipment" className="equipment-section" {...reveal}>
+      <section id="equipment" className="equipment-section">
         <div className="equipment-heading">
           <h2>Equipment depth for utility work that cannot stall.</h2>
           <p>
@@ -180,9 +130,9 @@ function TestPage() {
             </article>
           ))}
         </div>
-      </motion.section>
+      </section>
 
-      <motion.section className="documentation-section" {...reveal}>
+      <section className="documentation-section">
         <div className="documentation-copy">
           <h2>Field work is only as good as the record behind it.</h2>
           <p>
@@ -199,9 +149,9 @@ function TestPage() {
             </div>
           ))}
         </div>
-      </motion.section>
+      </section>
 
-      <motion.section className="visibility-section" {...reveal}>
+      <section className="visibility-section">
         <div className="visibility-media">
           <img src="/assets/dbc-field-truck.jpg" alt="Field crew installing underground utility conduit" />
         </div>
@@ -213,7 +163,7 @@ function TestPage() {
             instead of scattered across calls and texts.
           </p>
         </div>
-      </motion.section>
+      </section>
 
       <section id="contact" className="scope-section">
         <div className="scope-copy">

@@ -74,6 +74,6 @@ The site presents Vertex Infrastructure Group as a trenchless utility infrastruc
 
 The primary contact details retained from the existing site are:
 
-- `support@vertexifg.com`
+- `inquiries@vertexifg.com`
 - `(224) 531-5731`
 - `14729 Spring Valley Road, Morrison IL, 61270`

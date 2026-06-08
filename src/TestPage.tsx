@@ -4,23 +4,23 @@ import './TestPage.css'
 
 const utilityLines = [
   ['Fiber optic conduit', 'Long pulls, road crossings, and low-disruption pathway installation.'],
-  ['Gas utility support', 'Locate-aware boring, controlled access, and careful closeout around active assets.'],
+  ['Gas utility support', 'Locate-aware installation, controlled access, and careful closeout around active assets.'],
   ['Electric underground pathways', 'Planned utility corridors for service upgrades, extensions, and site work.'],
   ['Water infrastructure support', 'Trenchless paths for waterline work where surface protection matters.'],
 ]
 
 const fieldCapabilities = [
-  'Directional drilling and trenchless installation',
+  'Trenchless utility installation',
   'Crew and equipment mobilization',
   'Utility locate coordination',
   'Daily field records and photo documentation',
-  'Bore logs, production notes, and closeout support',
+  'Production notes and closeout support',
 ]
 
 const equipment = [
   {
     title: 'Vermeer D24x40 S3 Drill',
-    role: 'Bore production',
+    role: 'Route production',
     body: 'Compact drilling power for urban and rural routes where thrust, pullback, and site footprint all matter.',
     image: '/assets/dbc-vermeer-drill.png',
   },
@@ -76,7 +76,7 @@ function TestPage() {
           <a href="#equipment">Equipment</a>
           <a href="#contact">Project scope</a>
         </nav>
-        <a className="nav-action" href="mailto:support@vertexifg.com">
+        <a className="nav-action" href="mailto:inquiries@vertexifg.com">
           <Mail aria-hidden="true" />
           Send scope
         </a>
@@ -100,7 +100,7 @@ function TestPage() {
         >
           <h1 id="hero-title">Utility infrastructure, installed with field precision.</h1>
           <p>
-            Vertex IFG supports fiber, gas, electric, and water projects with directional drilling,
+            Vertex IFG supports fiber, gas, electric, and water projects with trenchless installation,
             utility coordination, field documentation, and closeout discipline.
           </p>
           <div className="hero-actions">
@@ -120,7 +120,7 @@ function TestPage() {
           transition={{ delay: 0.15, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
           <span>Field-proven operation</span>
-          <strong>Directional drilling, support vehicles, vacuum excavation, and closeout records.</strong>
+          <strong>Trenchless installation, support vehicles, vacuum excavation, and closeout records.</strong>
         </motion.aside>
       </section>
 
@@ -135,7 +135,7 @@ function TestPage() {
 
       <motion.section id="field" className="field-section" {...reveal}>
         <div className="field-image">
-          <img src="/assets/dbc-service-truck.jpeg" alt="Directional Boring Company service truck" />
+          <img src="/assets/dbc-service-truck.jpeg" alt="Vertex utility service truck" />
           <div className="image-station" aria-hidden="true">
             <span>STA 04</span>
             <span>Support vehicle</span>
@@ -220,9 +220,9 @@ function TestPage() {
             will review the work and respond with the next step.
           </p>
           <div className="scope-contact">
-            <a href="mailto:support@vertexifg.com">
+            <a href="mailto:inquiries@vertexifg.com">
               <Mail aria-hidden="true" />
-              support@vertexifg.com
+              inquiries@vertexifg.com
             </a>
             <a href="tel:+12245315731">
               <Phone aria-hidden="true" />

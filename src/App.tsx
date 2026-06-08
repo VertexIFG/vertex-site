@@ -67,7 +67,7 @@ function App() {
           <a href="#process">Process</a>
           <a href="#contact">Contact</a>
         </nav>
-        <a className="header-action" href="mailto:support@vertexifg.com">
+        <a className="header-action" href="mailto:inquiries@vertexifg.com">
           <Mail aria-hidden="true" />
           Support
         </a>
@@ -204,9 +204,9 @@ function App() {
           <p className="section-label">Start Here</p>
           <h2>Send the route, timeline, and utility scope. Vertex will take it from there.</h2>
           <div className="contact-actions">
-            <a className="button button-white" href="mailto:support@vertexifg.com">
+            <a className="button button-white" href="mailto:inquiries@vertexifg.com">
               <Mail aria-hidden="true" />
-              support@vertexifg.com
+              inquiries@vertexifg.com
             </a>
             <a className="button button-outline" href="tel:+12245315731">
               <Phone aria-hidden="true" />

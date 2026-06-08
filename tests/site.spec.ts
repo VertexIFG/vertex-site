@@ -40,9 +40,9 @@ test('navigation and contact links are wired', async ({ page }) => {
   await page.getByRole('link', { name: 'Fleet' }).first().click()
   await expect(page).toHaveURL(/#fleet$/)
 
-  await expect(page.getByRole('link', { name: /support@vertexifg.com/i })).toHaveAttribute(
+  await expect(page.getByRole('link', { name: /inquiries@vertexifg.com/i })).toHaveAttribute(
     'href',
-    'mailto:support@vertexifg.com',
+    'mailto:inquiries@vertexifg.com',
   )
   await expect(page.getByRole('link', { name: /\(224\) 531-5731/i }).first()).toHaveAttribute(
     'href',
@@ -85,6 +85,7 @@ test('old brand and legacy email are absent', async ({ page }) => {
   )
   await expect(page.locator('body')).not.toContainText(oldBrand)
   await expect(page.locator('body')).not.toContainText(oldEmail)
+  await expect(page.locator('body')).not.toContainText(/support@vertexifg\.com/i)
 })
 
 test('local test page renders as a design workbench', async ({ page }) => {
@@ -106,9 +107,9 @@ test('local test page renders as a design workbench', async ({ page }) => {
   await expect(page.getByRole('img', { name: /Field crew installing/i })).toBeVisible()
   await expect(page.locator('img[src="/assets/dbc-service-truck.jpeg"]')).toBeVisible()
   await expect(page.locator('.equipment-runway img')).toHaveCount(3)
-  await expect(page.getByRole('link', { name: /support@vertexifg.com/i })).toHaveAttribute(
+  await expect(page.getByRole('link', { name: /inquiries@vertexifg.com/i })).toHaveAttribute(
     'href',
-    'mailto:support@vertexifg.com',
+    'mailto:inquiries@vertexifg.com',
   )
 })
 

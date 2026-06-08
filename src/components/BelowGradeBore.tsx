@@ -286,8 +286,8 @@ function drawHeroScene(ctx: CanvasRenderingContext2D, size: SceneSize, rawProgre
   const utilities = [
     { label: 'ELECTRIC', color: '#e5091b', y: soilTop + layerHeight * 0.55, x1: width * 0.08, x2: width * 0.46 },
     { label: 'GAS', color: '#f3c634', y: soilTop + layerHeight * 1.02, x1: width * 0.54, x2: width * 0.93 },
-    { label: 'FIBER', color: '#f47b20', y: soilTop + layerHeight * 1.42, x1: width * 0.1, x2: width * 0.39 },
-    { label: 'WATER', color: '#2e8fff', y: soilTop + layerHeight * 1.86, x1: width * 0.59, x2: width * 0.95 },
+    { label: 'COMM / FIBER', color: '#f47b20', y: soilTop + layerHeight * 1.42, x1: width * 0.1, x2: width * 0.39 },
+    { label: 'POTABLE WATER', color: '#2e8fff', y: soilTop + layerHeight * 1.86, x1: width * 0.59, x2: width * 0.95 },
   ]
   utilities.forEach((utility) => {
     ctx.save()
@@ -351,8 +351,15 @@ function drawHeroScene(ctx: CanvasRenderingContext2D, size: SceneSize, rawProgre
       ctx.moveTo(width * 0.035, y)
       ctx.lineTo(width * 0.085, y)
       ctx.stroke()
-      drawLabel(ctx, `${index * 4} FT`, width * 0.04, y - 7, '#111418', compact ? 8 : 10)
     }
+    drawLabel(
+      ctx,
+      compact ? 'NOT TO SCALE / COVER VARIES' : 'SCHEMATIC PROFILE - NOT TO SCALE / COVER VARIES BY PROJECT',
+      width * 0.04,
+      height * 0.9,
+      '#f8f6f1',
+      compact ? 8 : 10,
+    )
     ctx.restore()
   }
 
@@ -376,13 +383,13 @@ function drawHeroScene(ctx: CanvasRenderingContext2D, size: SceneSize, rawProgre
   if (cutaway > 0.55) {
     const callouts = compact
       ? [
-          ['CLEARANCE', width * 0.43, soilTop + layerHeight * 1.08, width * 0.5, soilTop + layerHeight * 0.72],
-          ['PULLBACK', width * 0.62, soilTop + layerHeight * 1.9, width * 0.67, soilTop + layerHeight * 2.38],
+          ['VERIFY CLEARANCE', width * 0.43, soilTop + layerHeight * 1.08, width * 0.5, soilTop + layerHeight * 0.72],
+          ['PULLBACK ROUTE', width * 0.62, soilTop + layerHeight * 1.9, width * 0.67, soilTop + layerHeight * 2.38],
         ]
       : [
-          ['UTILITY CLEARANCE WINDOW', width * 0.47, soilTop + layerHeight * 1.1, width * 0.56, soilTop + layerHeight * 0.72],
-          ['VERTEX RED INSTALLED ROUTE', width * 0.58, soilTop + layerHeight * 1.85, width * 0.62, soilTop + layerHeight * 2.46],
-          ['CLOSEOUT DEPTH LOG', width * 0.7, soilTop + layerHeight * 2.65, width * 0.58, soilTop + layerHeight * 2.35],
+          ['LOCATED UTILITY CLEARANCE WINDOW', width * 0.47, soilTop + layerHeight * 1.1, width * 0.56, soilTop + layerHeight * 0.72],
+          ['PULLBACK / INSTALLED CONDUIT', width * 0.58, soilTop + layerHeight * 1.85, width * 0.62, soilTop + layerHeight * 2.46],
+          ['AS-BUILT DEPTH LOG', width * 0.7, soilTop + layerHeight * 2.65, width * 0.58, soilTop + layerHeight * 2.35],
         ]
     ctx.save()
     ctx.strokeStyle = 'rgba(248, 246, 241, 0.78)'

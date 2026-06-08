@@ -97,7 +97,7 @@ test('local test page renders as a design workbench', async ({ page }) => {
     '/assets/vertex-logo-wordmark.png',
   )
   await expect(
-    page.getByRole('heading', { name: /Utility infrastructure, installed with field precision/i }),
+    page.getByRole('heading', { name: /Drilling the future, one line at a time/i }),
   ).toBeVisible()
   await expect(page.getByRole('heading', { name: /Underground utility work is won/i })).toBeVisible()
   await expect(page.getByRole('heading', { name: /Equipment depth for utility work/i })).toBeVisible()

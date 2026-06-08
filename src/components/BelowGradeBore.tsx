@@ -574,7 +574,7 @@ export default function BelowGradeBore() {
             transform: `translateY(${copyShift}px)`,
           }}
         >
-          <h1 id="hero-title">Utility infrastructure, installed with field precision.</h1>
+          <h1 id="hero-title">Drilling the future, one line at a time.</h1>
           <p>
             Vertex IFG supports fiber, gas, electric, and water projects with trenchless installation,
             utility coordination, field documentation, and closeout discipline.

@@ -36,11 +36,11 @@ The production output is generated in `dist/` and can be deployed to any static 
 
 Production deploys are currently disabled while the site is being redesigned.
 
-Previous production hosting was Cloudflare Pages:
+Previous production hosting was Cloudflare Pages. The Pages project has been deleted and the custom-domain DNS records have been removed.
 
-- Project: `vertex-site`
+- Former project: `vertex-site`
 - Production branch: `main`
-- Cloudflare Pages URL: `https://vertex-site-doh.pages.dev`
+- Former Cloudflare Pages URL: `https://vertex-site-doh.pages.dev`
 - Custom domains were detached from Cloudflare Pages on 2026-06-08.
 
 The old deploy workflow is parked at `docs/deployment/deploy-cloudflare-pages.yml.disabled`. Move it back to `.github/workflows/deploy-cloudflare-pages.yml` only when the site is approved to go live again.

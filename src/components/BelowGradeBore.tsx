@@ -1,34 +1,6 @@
 import { ArrowUpRight } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 
-const beats = [
-  {
-    range: '00-01',
-    title: 'Plan the route before the first cut.',
-    body: 'The surface plan, entry angle, depth window, and existing utilities are visible before the drill moves.',
-  },
-  {
-    range: '01-02',
-    title: 'The ground opens into the work below.',
-    body: 'The hero transitions from surface operation to below-grade cutaway without leaving the first visual moment.',
-  },
-  {
-    range: '02-03',
-    title: 'The drill head cuts below active utilities.',
-    body: 'Electric, gas, water, and fiber remain visible while the head rotates through the planned clearance path.',
-  },
-  {
-    range: '03-04',
-    title: 'Pullback turns the bore into a pathway.',
-    body: 'Conduit follows the completed bore, resolving into a clean Vertex red utility route.',
-  },
-  {
-    range: '04-05',
-    title: 'Built below grade. Documented above it.',
-    body: 'The final pathway, stations, depth marks, and closeout notes lock into the finished view.',
-  },
-]
-
 type Point = {
   x: number
   y: number
@@ -44,14 +16,6 @@ const easeOut = (value: number) => 1 - Math.pow(1 - clamp(value), 3)
 const easeInOut = (value: number) => {
   const t = clamp(value)
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
-}
-
-const beatFromProgress = (progress: number) => {
-  if (progress < 0.12) return 0
-  if (progress < 0.3) return 1
-  if (progress < 0.58) return 2
-  if (progress < 0.82) return 3
-  return 4
 }
 
 function cubicPoint(t: number, p0: Point, p1: Point, p2: Point, p3: Point) {
@@ -211,16 +175,17 @@ function drawHeroScene(ctx: CanvasRenderingContext2D, size: SceneSize, rawProgre
 
   ctx.clearRect(0, 0, width, height)
 
-  const sky = ctx.createLinearGradient(0, 0, 0, height)
-  sky.addColorStop(0, '#08090b')
-  sky.addColorStop(0.45, '#111418')
-  sky.addColorStop(1, '#070809')
+  const sky = ctx.createLinearGradient(0, 0, width, height)
+  sky.addColorStop(0, '#ffffff')
+  sky.addColorStop(0.38, '#fbfbfc')
+  sky.addColorStop(0.74, '#f8ecee')
+  sky.addColorStop(1, '#e5091b')
   ctx.fillStyle = sky
   ctx.fillRect(0, 0, width, height)
 
   ctx.save()
-  ctx.globalAlpha = 0.24
-  ctx.strokeStyle = '#f8f6f1'
+  ctx.globalAlpha = 0.28
+  ctx.strokeStyle = '#d7dde3'
   ctx.lineWidth = 1
   for (let x = 0; x < width; x += compact ? 46 : 66) {
     ctx.beginPath()
@@ -236,11 +201,23 @@ function drawHeroScene(ctx: CanvasRenderingContext2D, size: SceneSize, rawProgre
   }
   ctx.restore()
 
-  ctx.fillStyle = '#2f353b'
+  ctx.save()
+  ctx.globalAlpha = 0.2
+  ctx.fillStyle = '#e5091b'
+  ctx.beginPath()
+  ctx.moveTo(width * 0.52, 0)
+  ctx.lineTo(width, 0)
+  ctx.lineTo(width, height * 0.72)
+  ctx.quadraticCurveTo(width * 0.79, height * 0.52, width * 0.66, height * 0.28)
+  ctx.closePath()
+  ctx.fill()
+  ctx.restore()
+
+  ctx.fillStyle = '#d9dde1'
   ctx.fillRect(0, surfaceY - height * 0.08, width, height * 0.08)
-  ctx.fillStyle = '#15191e'
+  ctx.fillStyle = '#23282e'
   ctx.fillRect(0, surfaceY - height * 0.026, width, height * 0.026)
-  ctx.strokeStyle = 'rgba(248, 246, 241, 0.22)'
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.48)'
   ctx.lineWidth = 2
   for (let x = -80; x < width; x += compact ? 92 : 150) {
     ctx.beginPath()
@@ -433,7 +410,6 @@ export default function BelowGradeBore() {
   const progressRef = useRef(0)
   const reducedMotion = useReducedMotion()
   const isMobile = useIsMobile()
-  const [activeBeat, setActiveBeat] = useState(0)
   const [progressState, setProgressState] = useState(0)
 
   useEffect(() => {
@@ -464,7 +440,6 @@ export default function BelowGradeBore() {
     const update = () => {
       if (staticMode) {
         progressRef.current = 0.86
-        setActiveBeat(4)
         setProgressState(0)
         return
       }
@@ -473,7 +448,6 @@ export default function BelowGradeBore() {
       const travel = Math.max(1, rect.height - window.innerHeight)
       const progress = clamp(-rect.top / travel)
       progressRef.current = progress
-      setActiveBeat(beatFromProgress(progress))
       setProgressState(progress)
     }
 
@@ -516,7 +490,6 @@ export default function BelowGradeBore() {
             transform: `translateY(${copyShift}px)`,
           }}
         >
-          <span className="bore-kicker">Below-grade utility infrastructure</span>
           <h1 id="hero-title">Utility infrastructure, installed with field precision.</h1>
           <p>
             Vertex IFG supports fiber, gas, electric, and water projects with trenchless installation,
@@ -532,16 +505,6 @@ export default function BelowGradeBore() {
             </a>
           </div>
         </div>
-
-        <aside className="bore-hero-beats" aria-label="Scroll animation sequence">
-          {beats.map((beat, index) => (
-            <article className={activeBeat === index ? 'is-active' : ''} key={beat.title}>
-              <span>{beat.range}</span>
-              <strong>{beat.title}</strong>
-              <p>{beat.body}</p>
-            </article>
-          ))}
-        </aside>
       </div>
     </section>
   )

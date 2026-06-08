@@ -403,8 +403,8 @@
 .bore-hero-section {
   position: relative;
   height: 520vh;
-  background: var(--ink);
-  color: var(--white);
+  background: var(--white);
+  color: var(--ink);
 }
 
 .bore-hero-sticky {
@@ -413,7 +413,9 @@
   height: 100vh;
   min-height: 820px;
   overflow: hidden;
-  background: var(--ink);
+  background:
+    radial-gradient(circle at 86% 18%, rgba(229, 9, 27, 0.22), transparent 34%),
+    linear-gradient(135deg, #ffffff 0%, #ffffff 44%, #fff3f4 72%, #e5091b 140%);
 }
 
 .bore-hero-canvas,
@@ -431,8 +433,8 @@
 .bore-hero-shade {
   pointer-events: none;
   background:
-    linear-gradient(90deg, rgba(7, 8, 9, 0.94) 0%, rgba(7, 8, 9, 0.82) 31%, rgba(7, 8, 9, 0.28) 62%, rgba(7, 8, 9, 0.15) 100%),
-    linear-gradient(180deg, rgba(7, 8, 9, 0.62) 0%, transparent 30%, rgba(7, 8, 9, 0.34) 100%);
+    linear-gradient(90deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0.86) 32%, rgba(255, 255, 255, 0.36) 61%, rgba(229, 9, 27, 0.05) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.74) 0%, transparent 30%, rgba(255, 255, 255, 0.18) 100%);
 }
 
 .bore-hero-sticky::before {
@@ -441,8 +443,8 @@
   inset: 0;
   z-index: 1;
   background:
-    linear-gradient(rgba(248, 246, 241, 0.055) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(248, 246, 241, 0.055) 1px, transparent 1px);
+    linear-gradient(rgba(17, 20, 24, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(17, 20, 24, 0.07) 1px, transparent 1px);
   background-size: 74px 74px;
   mask-image: linear-gradient(90deg, #000 0%, #000 56%, transparent 100%);
   pointer-events: none;
@@ -455,8 +457,8 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  padding: 156px 0 92px;
+  justify-content: center;
+  padding: 118px 0 188px;
   margin-left: var(--gutter);
 }
 
@@ -471,7 +473,7 @@
 
 .bore-hero-copy h1 {
   max-width: 820px;
-  color: var(--white);
+  color: var(--ink);
   font-size: 7.45rem;
   line-height: 0.82;
 }
@@ -479,64 +481,9 @@
 .bore-hero-copy p {
   max-width: 640px;
   margin-top: 28px;
-  color: rgba(248, 246, 241, 0.76);
+  color: rgba(17, 20, 24, 0.68);
   font-size: 1.12rem;
   line-height: 1.72;
-}
-
-.bore-hero-beats {
-  position: absolute;
-  z-index: 2;
-  right: var(--gutter);
-  bottom: 44px;
-  width: min(430px, 33vw);
-  display: grid;
-  border-top: 1px solid rgba(248, 246, 241, 0.18);
-}
-
-.bore-hero-beats article {
-  display: grid;
-  grid-template-columns: 52px 1fr;
-  gap: 8px 14px;
-  padding: 12px 0;
-  border-bottom: 1px solid rgba(248, 246, 241, 0.18);
-  opacity: 0.36;
-  transform: translateX(0);
-  transition:
-    opacity 180ms ease,
-    transform 180ms ease;
-}
-
-.bore-hero-beats article.is-active {
-  opacity: 1;
-  transform: translateX(8px);
-}
-
-.bore-hero-beats span {
-  color: var(--red);
-  font-family: 'Barlow Condensed', Inter, sans-serif;
-  font-size: 1.25rem;
-  font-weight: 900;
-}
-
-.bore-hero-beats strong {
-  color: var(--white);
-  font-size: 0.96rem;
-  font-weight: 900;
-  line-height: 1.18;
-}
-
-.bore-hero-beats p {
-  grid-column: 2;
-  display: none;
-  max-width: 340px;
-  color: rgba(248, 246, 241, 0.62);
-  font-size: 0.84rem;
-  line-height: 1.5;
-}
-
-.bore-hero-beats article.is-active p {
-  display: block;
 }
 
 .field-section {
@@ -1037,11 +984,6 @@
     font-size: 6.1rem;
   }
 
-  .bore-hero-beats {
-    width: min(380px, 34vw);
-    bottom: 30px;
-  }
-
   .field-copy,
   .visibility-copy {
     padding: 84px var(--gutter);
@@ -1237,7 +1179,7 @@
 
   .bore-hero-shade {
     background:
-      linear-gradient(180deg, rgba(7, 8, 9, 0.74) 0%, rgba(7, 8, 9, 0.28) 34%, rgba(7, 8, 9, 0.58) 100%);
+      linear-gradient(180deg, rgba(255, 255, 255, 0.84) 0%, rgba(255, 255, 255, 0.24) 34%, rgba(255, 255, 255, 0.44) 100%);
   }
 
   .bore-hero-copy {
@@ -1255,27 +1197,6 @@
 
   .bore-hero-copy p {
     font-size: 1rem;
-  }
-
-  .bore-hero-beats {
-    position: relative;
-    right: auto;
-    bottom: auto;
-    order: 3;
-    width: 100%;
-    margin-top: 32px;
-  }
-
-  .bore-hero-beats article {
-    grid-template-columns: 42px 1fr;
-    gap: 8px 14px;
-    opacity: 1;
-    transform: none;
-  }
-
-  .bore-hero-beats p {
-    display: block;
-    max-width: none;
   }
 
   .field-image,
@@ -1430,10 +1351,5 @@
 
   .bore-hero-sticky {
     position: relative;
-  }
-
-  .bore-hero-beats article {
-    opacity: 1;
-    transform: none;
   }
 }

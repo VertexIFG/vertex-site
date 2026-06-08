@@ -103,6 +103,9 @@ test('local test page renders as a design workbench', async ({ page }) => {
   await expect(page.getByRole('heading', { name: /Equipment depth for utility work/i })).toBeVisible()
   await expect(page.locator('.bore-hero-section')).toBeVisible()
   await expect(page.locator('.bore-hero-canvas')).toBeVisible()
+  await expect(page.locator('.bore-hero-beats')).toHaveCount(0)
+  await expect(page.getByText('Below-grade utility infrastructure')).toHaveCount(0)
+  await expect(page.getByText('Plan the route before the first cut.')).toHaveCount(0)
   await expect(page.locator('.test-command-panel')).toHaveCount(0)
   await expect(page.locator('.hero-photo')).toHaveCount(0)
   await expect(page.getByRole('img', { name: /Field crew installing/i })).toBeVisible()
@@ -160,9 +163,6 @@ test('below-grade boring animation scrubs on desktop and falls back on mobile mo
   await page.evaluate(
     ({ y, height, viewport }) => window.scrollTo(0, y + (height - viewport) * 0.5),
     sectionMetrics,
-  )
-  await expect(page.locator('.bore-hero-beats .is-active')).toContainText(
-    'The drill head cuts below active utilities.',
   )
   await expect(page.locator('.bore-hero-sticky')).toBeInViewport()
 

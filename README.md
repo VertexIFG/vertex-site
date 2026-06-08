@@ -45,7 +45,7 @@ Pushes to `main` run `.github/workflows/deploy-cloudflare-pages.yml`, which inst
 
 ## Brand Notes
 
-The site presents Vertex Infrastructure Group as a horizontal directional drilling contractor for:
+The site presents Vertex Infrastructure Group as a trenchless utility infrastructure contractor for:
 
 - Fiber optic
 - Gas
@@ -54,6 +54,6 @@ The site presents Vertex Infrastructure Group as a horizontal directional drilli
 
 The primary contact details retained from the existing site are:
 
-- `inquiries@directionalboring.org`
+- `support@vertexifg.com`
 - `(224) 531-5731`
 - `14729 Spring Valley Road, Morrison IL, 61270`

@@ -1,303 +1,224 @@
 import {
-  ArrowRight,
-  CheckCircle2,
-  Clock3,
-  Drill,
+  ArrowUpRight,
+  Cable,
+  Check,
+  Droplets,
   Flame,
-  Leaf,
+  Gauge,
   Mail,
   MapPin,
   Phone,
   ShieldCheck,
-  Signal,
-  UtilityPole,
-  Waves,
   Zap,
 } from 'lucide-react'
 import './App.css'
 
-const services = [
-  {
-    icon: Signal,
-    title: 'Fiber Optic',
-    body: 'Trenchless conduit paths for backbone, last-mile, and municipal fiber expansions.',
-  },
-  {
-    icon: Flame,
-    title: 'Gas',
-    body: 'Controlled underground installations planned around existing utilities and site constraints.',
-  },
-  {
-    icon: Zap,
-    title: 'Electric',
-    body: 'Precise bores for electrical conduit, utility crossings, and service upgrades.',
-  },
-  {
-    icon: Waves,
-    title: 'Water',
-    body: 'Low-disturbance utility routes that protect surface conditions and reduce restoration work.',
-  },
+const sectors = [
+  { label: 'Fiber optic', icon: Cable },
+  { label: 'Gas', icon: Flame },
+  { label: 'Electric', icon: Zap },
+  { label: 'Water', icon: Droplets },
 ]
 
-const equipment = [
-  {
-    image: '/assets/vermeer-drill.webp',
-    title: 'Vermeer D24x40 S3 Drill',
-    detail: 'Compact power for urban and rural bores with strong thrust, pullback, and jobsite control.',
-  },
-  {
-    image: '/assets/vac-excavator.webp',
-    title: 'Vermeer VX50 Vacuum Excavator',
-    detail: 'Clean potholing, efficient spoil removal, and safer exposure of underground utilities.',
-  },
-  {
-    image: '/assets/mixing-system.webp',
-    title: 'Vermeer Mixing System',
-    detail: 'Consistent drilling fluid management for borehole stability and productive field operations.',
-  },
-]
-
-const safetyPractices = [
-  'OSHA-trained crews and daily briefings',
-  'Site-specific utility locates and hazard plans',
-  'PPE compliance, traffic control, and work-zone discipline',
-  'Spill response planning and responsible fluid handling',
+const standards = [
+  'Pre-construction route review',
+  'Utility-aware field execution',
+  'Clean work zones and restoration',
+  'Photo-ready fleet presentation',
 ]
 
 const process = [
-  'Scope the route',
-  'Locate utilities',
-  'Drill with precision',
-  'Restore cleanly',
+  ['01', 'Plan', 'Route, access, crossings, and surface conditions are reviewed before equipment moves.'],
+  ['02', 'Locate', 'Existing utilities and site constraints are mapped into the field plan.'],
+  ['03', 'Install', 'Crews execute controlled trenchless utility paths with tight communication.'],
+  ['04', 'Close', 'The site is cleaned, documented, and turned over without loose ends.'],
+]
+
+const gallery = [
+  {
+    image: '/assets/vertex-truck-2.webp',
+    title: 'Night-ready fleet presence',
+  },
+  {
+    image: '/assets/vertex-truck-3.webp',
+    title: 'Branded utility support vehicles',
+  },
+  {
+    image: '/assets/vertex-truck-4.webp',
+    title: 'Field-ready crew mobility',
+  },
 ]
 
 function App() {
   return (
     <main>
       <header className="site-header" aria-label="Primary navigation">
-        <a className="brand-mark" href="#top" aria-label="Vertex Infrastructure Group home">
+        <a className="brand" href="#top" aria-label="Vertex Infrastructure Group home">
           <img src="/assets/vertex-logo-wide.png" alt="Vertex Infrastructure Group" />
         </a>
         <nav>
-          <a href="#services">Services</a>
-          <a href="#equipment">Equipment</a>
-          <a href="#safety">Safety</a>
+          <a href="#capabilities">Capabilities</a>
+          <a href="#fleet">Fleet</a>
+          <a href="#process">Process</a>
           <a href="#contact">Contact</a>
         </nav>
-        <a className="header-cta" href="tel:+12245315731">
-          <Phone aria-hidden="true" />
-          Call
+        <a className="header-action" href="mailto:support@vertexifg.com">
+          <Mail aria-hidden="true" />
+          Support
         </a>
       </header>
 
-      <section id="top" className="hero-section">
-        <div className="hero-media" aria-hidden="true">
-          <img src="/assets/field-crew.webp" alt="" />
-        </div>
+      <section id="top" className="hero">
+        <img className="hero-image" src="/assets/vertex-truck-1.webp" alt="" />
+        <div className="hero-shade" aria-hidden="true" />
         <div className="hero-content">
-          <p className="eyebrow">Fiber Optic · Gas · Electric · Water</p>
-          <h1>Precision underground infrastructure with a cleaner surface finish.</h1>
+          <p className="eyebrow">Fiber optic · Gas · Electric · Water</p>
+          <h1>Vertex Infrastructure Group</h1>
           <p className="hero-copy">
-            Vertex Infrastructure Group delivers horizontal directional drilling for utility
-            projects that need accuracy, speed, and disciplined jobsite execution.
+            Trenchless utility installation with polished field operations, modern equipment, and a
+            fleet built to represent the job before a crew ever steps out.
           </p>
           <div className="hero-actions">
-            <a className="button primary" href="#contact">
-              Request a project review
-              <ArrowRight aria-hidden="true" />
+            <a className="button button-red" href="#contact">
+              Start a project
+              <ArrowUpRight aria-hidden="true" />
             </a>
-            <a className="button secondary" href="#services">
-              Explore capabilities
+            <a className="button button-glass" href="#fleet">
+              View fleet
             </a>
           </div>
         </div>
-        <aside className="hero-panel" aria-label="Vertex operating metrics">
+        <div className="hero-metrics" aria-label="Service overview">
           <div>
-            <span>7+</span>
-            <p>Years in the field</p>
+            <strong>4</strong>
+            <span>Core utility sectors</span>
           </div>
           <div>
-            <span>4</span>
-            <p>Utility sectors served</p>
+            <strong>HDD</strong>
+            <span>Trenchless install capability</span>
           </div>
           <div>
-            <span>HDD</span>
-            <p>Low-impact installation</p>
+            <strong>IL</strong>
+            <span>Morrison-based operations</span>
           </div>
-        </aside>
+        </div>
       </section>
 
-      <section className="intro-band" aria-label="Company summary">
+      <section id="capabilities" className="capability-strip" aria-label="Utility sectors">
+        {sectors.map((sector) => {
+          const Icon = sector.icon
+          return (
+            <div className="sector" key={sector.label}>
+              <Icon aria-hidden="true" />
+              <span>{sector.label}</span>
+            </div>
+          )
+        })}
+      </section>
+
+      <section className="section intro">
         <div>
-          <p className="section-kicker">Vertex Infrastructure Group</p>
-          <h2>Built for utility work where accuracy, safety, and surface protection matter.</h2>
+          <p className="section-label">What Vertex Does</p>
+          <h2>Utility paths installed cleanly, planned tightly, and delivered with less surface disruption.</h2>
         </div>
-        <p>
-          Vertex sharpens the focus around utility infrastructure: dependable trenchless drilling,
-          carefully maintained equipment, and crews trained to leave every jobsite controlled,
-          clean, and ready for the next phase.
-        </p>
-      </section>
-
-      <section id="services" className="section service-section">
-        <div className="section-heading">
-          <p className="section-kicker">Capabilities</p>
-          <h2>Utility sectors supported by one disciplined HDD platform.</h2>
-        </div>
-        <div className="service-grid">
-          {services.map((service) => {
-            const Icon = service.icon
-            return (
-              <article className="service-card" key={service.title}>
-                <Icon aria-hidden="true" />
-                <h3>{service.title}</h3>
-                <p>{service.body}</p>
-              </article>
-            )
-          })}
-        </div>
-      </section>
-
-      <section className="split-section">
-        <div className="split-copy">
-          <p className="section-kicker">Approach</p>
-          <h2>Trenchless installation designed around fewer surprises.</h2>
+        <div className="intro-copy">
           <p>
-            Vertex plans each bore around site access, existing utilities, soil conditions, traffic
-            control, and restoration needs. The result is a tighter field operation with less open
-            excavation and a smaller impact on the surrounding property.
+            Vertex supports underground infrastructure work where the route matters, the surface
+            matters, and the operator needs a crew that looks as buttoned-up as it works.
           </p>
-          <ul className="check-list">
-            <li>
-              <CheckCircle2 aria-hidden="true" />
-              Non-invasive alternative to trenching
-            </li>
-            <li>
-              <CheckCircle2 aria-hidden="true" />
-              Accurate utility paths across constrained sites
-            </li>
-            <li>
-              <CheckCircle2 aria-hidden="true" />
-              Cleaner restoration for public and private work
-            </li>
-          </ul>
-        </div>
-        <div className="split-image">
-          <img src="/assets/worksite.webp" alt="Directional drilling worksite and utility crew" />
-        </div>
-      </section>
-
-      <section id="equipment" className="section equipment-section">
-        <div className="section-heading">
-          <p className="section-kicker">Equipment</p>
-          <h2>Modern Vermeer equipment for precise, low-impact production.</h2>
-        </div>
-        <div className="equipment-grid">
-          {equipment.map((item) => (
-            <article className="equipment-card" key={item.title}>
-              <img src={item.image} alt={item.title} />
-              <div>
-                <h3>{item.title}</h3>
-                <p>{item.detail}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section id="safety" className="safety-section">
-        <div className="safety-image">
-          <img src="/assets/field-crew.webp" alt="Utility infrastructure crew at a field worksite" />
-        </div>
-        <div className="safety-copy">
-          <p className="section-kicker">Safety + Environment</p>
-          <h2>Do it right. Do it safely. Leave no trace.</h2>
-          <p>
-            Safety and environmental control are built into the work: briefings, locates, PPE, fluid
-            management, spoil handling, and site restoration policies that protect crews, clients,
-            and communities.
-          </p>
-          <div className="practice-list">
-            {safetyPractices.map((practice) => (
-              <div key={practice}>
-                <ShieldCheck aria-hidden="true" />
-                <span>{practice}</span>
+          <div className="standard-list">
+            {standards.map((standard) => (
+              <div key={standard}>
+                <Check aria-hidden="true" />
+                {standard}
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="process-section" aria-label="Project process">
-        <div className="process-heading">
-          <p className="section-kicker">Project Flow</p>
-          <h2>A clean path from quote to restoration.</h2>
+      <section id="fleet" className="fleet-showcase">
+        <div className="fleet-copy">
+          <p className="section-label">Fleet</p>
+          <h2>Branded vehicles that make the operation feel intentional before the work starts.</h2>
+          <p>
+            The refreshed Vertex presence is clean, recognizable, and built for utility clients who
+            need confidence in both the field crew and the finished result.
+          </p>
         </div>
-        <div className="process-rail">
-          {process.map((step, index) => (
-            <div className="process-step" key={step}>
-              <span>{String(index + 1).padStart(2, '0')}</span>
-              <p>{step}</p>
-            </div>
+        <div className="fleet-main">
+          <img src="/assets/vertex-truck-2.webp" alt="Vertex Infrastructure Group branded SUV" />
+        </div>
+      </section>
+
+      <section className="section proof">
+        <article>
+          <Gauge aria-hidden="true" />
+          <h3>Precise field planning</h3>
+          <p>Routes are reviewed around access, crossings, site constraints, and restoration needs.</p>
+        </article>
+        <article>
+          <ShieldCheck aria-hidden="true" />
+          <h3>Controlled worksites</h3>
+          <p>Crews operate with the discipline expected around public, commercial, and utility assets.</p>
+        </article>
+        <article>
+          <MapPin aria-hidden="true" />
+          <h3>Regional response</h3>
+          <p>Morrison-based operations give Vertex a practical launch point for Midwest projects.</p>
+        </article>
+      </section>
+
+      <section className="gallery" aria-label="Vertex fleet gallery">
+        {gallery.map((item) => (
+          <figure key={item.image}>
+            <img src={item.image} alt={item.title} />
+            <figcaption>{item.title}</figcaption>
+          </figure>
+        ))}
+      </section>
+
+      <section id="process" className="section process">
+        <div className="process-heading">
+          <p className="section-label">Process</p>
+          <h2>A tighter path from first call to completed utility route.</h2>
+        </div>
+        <div className="process-grid">
+          {process.map(([number, title, body]) => (
+            <article key={number}>
+              <span>{number}</span>
+              <h3>{title}</h3>
+              <p>{body}</p>
+            </article>
           ))}
         </div>
       </section>
 
-      <section id="contact" className="contact-section">
-        <div className="contact-content">
-          <p className="section-kicker">Start a Project</p>
-          <h2>Bring Vertex in early for route planning, utility installs, and project scopes.</h2>
-          <p>
-            Share the location, utility type, approximate bore length, site constraints, and target
-            schedule. The team will respond with next steps.
-          </p>
+      <section id="contact" className="contact">
+        <div className="contact-panel">
+          <p className="section-label">Start Here</p>
+          <h2>Send the route, timeline, and utility scope. Vertex will take it from there.</h2>
           <div className="contact-actions">
-            <a className="button primary" href="mailto:inquiries@directionalboring.org">
+            <a className="button button-white" href="mailto:support@vertexifg.com">
               <Mail aria-hidden="true" />
-              Email Vertex
+              support@vertexifg.com
             </a>
-            <a className="button secondary light" href="tel:+12245315731">
+            <a className="button button-outline" href="tel:+12245315731">
               <Phone aria-hidden="true" />
               (224) 531-5731
             </a>
           </div>
         </div>
-        <div className="contact-details" aria-label="Contact details">
-          <div>
-            <Mail aria-hidden="true" />
-            <a href="mailto:inquiries@directionalboring.org">inquiries@directionalboring.org</a>
-          </div>
-          <div>
-            <Phone aria-hidden="true" />
-            <a href="tel:+12245315731">(224) 531-5731</a>
-          </div>
-          <div>
-            <MapPin aria-hidden="true" />
-            <span>14729 Spring Valley Road, Morrison IL, 61270</span>
-          </div>
+        <div className="contact-meta">
+          <span>14729 Spring Valley Road</span>
+          <span>Morrison, IL 61270</span>
+          <span>Fiber · Gas · Electric · Water</span>
         </div>
       </section>
 
-      <footer className="site-footer">
+      <footer className="footer">
         <img src="/assets/vertex-logo-wide.png" alt="Vertex Infrastructure Group" />
-        <div className="footer-links">
-          <a href="#services">
-            <UtilityPole aria-hidden="true" />
-            Services
-          </a>
-          <a href="#equipment">
-            <Drill aria-hidden="true" />
-            Equipment
-          </a>
-          <a href="#safety">
-            <Leaf aria-hidden="true" />
-            Safety
-          </a>
-          <a href="#contact">
-            <Clock3 aria-hidden="true" />
-            Contact
-          </a>
-        </div>
+        <span>Trenchless utility infrastructure</span>
       </footer>
     </main>
   )

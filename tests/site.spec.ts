@@ -96,10 +96,13 @@ test('local test page renders as a design workbench', async ({ page }) => {
     '/assets/vertex-logo-wordmark.png',
   )
   await expect(
-    page.getByRole('heading', { name: /Underground work with surface-level precision/i }),
+    page.getByRole('heading', { name: /Utility installs with command-center precision/i }),
   ).toBeVisible()
-  await expect(page.getByRole('heading', { name: /Fleet imagery supports the brand/i })).toBeVisible()
+  await expect(page.getByRole('heading', { name: /Real crews\. Real equipment/i })).toBeVisible()
+  await expect(page.getByRole('heading', { name: /The tools that drive performance/i })).toBeVisible()
   await expect(page.locator('.test-hero img')).toHaveCount(0)
+  await expect(page.locator('img[src="/assets/dbc-field-truck.jpg"]')).toBeVisible()
+  await expect(page.locator('img[src="/assets/dbc-service-truck.jpeg"]')).toBeVisible()
   await expect(page.getByRole('link', { name: /support@vertexifg.com/i })).toHaveAttribute(
     'href',
     'mailto:support@vertexifg.com',

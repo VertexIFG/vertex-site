@@ -26,13 +26,24 @@ function cubicPoint(t: number, p0: Point, p1: Point, p2: Point, p3: Point) {
   }
 }
 
-function routeSamples(size: SceneSize, surfaceY: number, count = 180) {
+function routeSamples(size: SceneSize, surfaceY: number, count = 220) {
   const { width, height } = size
   const p0 = { x: width * 0.68, y: surfaceY - height * 0.015 }
-  const p1 = { x: width * 0.62, y: surfaceY + height * 0.22 }
-  const p2 = { x: width * 0.34, y: surfaceY + height * 0.36 }
-  const p3 = { x: width * 0.16, y: surfaceY + height * 0.24 }
-  return Array.from({ length: count }, (_, index) => cubicPoint(index / (count - 1), p0, p1, p2, p3))
+  const p1 = { x: width * 0.65, y: surfaceY + height * 0.1 }
+  const p2 = { x: width * 0.58, y: surfaceY + height * 0.23 }
+  const p3 = { x: width * 0.47, y: surfaceY + height * 0.285 }
+  const end = { x: width * 0.12, y: surfaceY + height * 0.3 }
+  const curveCount = Math.floor(count * 0.46)
+  const straightCount = count - curveCount
+  const curve = Array.from({ length: curveCount }, (_, index) => cubicPoint(index / (curveCount - 1), p0, p1, p2, p3))
+  const straight = Array.from({ length: straightCount }, (_, index) => {
+    const t = index / (straightCount - 1)
+    return {
+      x: p3.x + (end.x - p3.x) * t,
+      y: p3.y + (end.y - p3.y) * t,
+    }
+  })
+  return [...curve, ...straight.slice(1)]
 }
 
 function drawPath(ctx: CanvasRenderingContext2D, points: Point[], progress = 1) {
@@ -170,16 +181,18 @@ function drawHeroScene(ctx: CanvasRenderingContext2D, size: SceneSize, rawProgre
   const drillMotion = easeInOut((progress - 0.22) / 0.42)
   const conduit = easeInOut((progress - 0.62) / 0.24)
   const closeout = easeOut((progress - 0.84) / 0.16)
-  const surfaceY = height * (compact ? 0.34 : 0.58) - height * (compact ? 0.04 : 0.24) * cutaway
+  const initialSurfaceY = height * (compact ? 0.76 : 0.76)
+  const finalSurfaceY = height * (compact ? 0.54 : 0.42)
+  const surfaceY = initialSurfaceY + (finalSurfaceY - initialSurfaceY) * cutaway
   const samples = routeSamples(size, surfaceY)
 
   ctx.clearRect(0, 0, width, height)
 
   const sky = ctx.createLinearGradient(0, 0, width, height)
   sky.addColorStop(0, '#ffffff')
-  sky.addColorStop(0.38, '#fbfbfc')
-  sky.addColorStop(0.74, '#f8ecee')
-  sky.addColorStop(1, '#e5091b')
+  sky.addColorStop(0.34, '#ffffff')
+  sky.addColorStop(0.68, '#fff1f2')
+  sky.addColorStop(1, '#f04a56')
   ctx.fillStyle = sky
   ctx.fillRect(0, 0, width, height)
 
@@ -202,7 +215,7 @@ function drawHeroScene(ctx: CanvasRenderingContext2D, size: SceneSize, rawProgre
   ctx.restore()
 
   ctx.save()
-  ctx.globalAlpha = 0.2
+  ctx.globalAlpha = 0.18
   ctx.fillStyle = '#e5091b'
   ctx.beginPath()
   ctx.moveTo(width * 0.52, 0)
@@ -211,6 +224,16 @@ function drawHeroScene(ctx: CanvasRenderingContext2D, size: SceneSize, rawProgre
   ctx.quadraticCurveTo(width * 0.79, height * 0.52, width * 0.66, height * 0.28)
   ctx.closePath()
   ctx.fill()
+  ctx.restore()
+
+  ctx.save()
+  ctx.globalAlpha = 0.45
+  const redWash = ctx.createLinearGradient(width * 0.34, 0, width, height)
+  redWash.addColorStop(0, 'rgba(229, 9, 27, 0)')
+  redWash.addColorStop(0.62, 'rgba(229, 9, 27, 0.12)')
+  redWash.addColorStop(1, 'rgba(229, 9, 27, 0.24)')
+  ctx.fillStyle = redWash
+  ctx.fillRect(0, 0, width, height)
   ctx.restore()
 
   ctx.fillStyle = '#d9dde1'
@@ -281,9 +304,17 @@ function drawHeroScene(ctx: CanvasRenderingContext2D, size: SceneSize, rawProgre
   })
 
   ctx.save()
-  ctx.globalAlpha = 0.18 + cutaway * 0.82
+  ctx.globalAlpha = 0.12 + cutaway * 0.18
   ctx.strokeStyle = '#e5091b'
-  ctx.lineWidth = compact ? 3 : 5
+  ctx.lineWidth = compact ? 11 : 18
+  ctx.lineCap = 'round'
+  drawPath(ctx, samples, Math.max(0.18, drillMotion * 0.92))
+  ctx.restore()
+
+  ctx.save()
+  ctx.globalAlpha = 0.38 + cutaway * 0.62
+  ctx.strokeStyle = '#e5091b'
+  ctx.lineWidth = compact ? 4 : 7
   ctx.lineCap = 'round'
   drawPath(ctx, samples, Math.max(0.18, drillMotion * 0.92))
   ctx.restore()
@@ -332,7 +363,7 @@ function drawHeroScene(ctx: CanvasRenderingContext2D, size: SceneSize, rawProgre
     const next = pointAt(samples, Math.min(1, drillMotion + 0.02))
     drawDrillHead(ctx, head, next, size, progress)
     ctx.save()
-    ctx.fillStyle = 'rgba(7, 8, 9, 0.28)'
+    ctx.fillStyle = 'rgba(17, 20, 24, 0.32)'
     for (let index = 0; index < 18; index += 1) {
       const drift = index * 0.2 + progress * 12
       ctx.beginPath()
@@ -481,7 +512,7 @@ export default function BelowGradeBore() {
     >
       <div className="bore-hero-sticky">
         <canvas ref={canvasRef} className="bore-hero-canvas" aria-hidden="true" />
-        <div className="bore-hero-shade" aria-hidden="true" />
+        <div className="bore-hero-shade" style={{ opacity: copyFade }} aria-hidden="true" />
         <div
           className="bore-hero-copy"
           style={{

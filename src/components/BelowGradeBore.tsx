@@ -59,6 +59,21 @@ function drawPath(ctx: CanvasRenderingContext2D, points: Point[], progress = 1) 
   ctx.stroke()
 }
 
+function drawPathFromEnd(ctx: CanvasRenderingContext2D, points: Point[], progress = 1) {
+  const clamped = clamp(progress)
+  if (clamped <= 0.006) return
+
+  const visible = Math.max(2, Math.floor(points.length * clamped))
+  const startIndex = points.length - 1
+  const endIndex = Math.max(0, points.length - visible)
+  ctx.beginPath()
+  ctx.moveTo(points[startIndex].x, points[startIndex].y)
+  for (let index = startIndex - 1; index >= endIndex; index -= 1) {
+    ctx.lineTo(points[index].x, points[index].y)
+  }
+  ctx.stroke()
+}
+
 function pointAt(points: Point[], progress: number) {
   return points[Math.round((points.length - 1) * clamp(progress))]
 }
@@ -88,66 +103,91 @@ function drawLabel(ctx: CanvasRenderingContext2D, text: string, x: number, y: nu
 
 function drawBoringRig(ctx: CanvasRenderingContext2D, size: SceneSize, surfaceY: number, progress: number) {
   const { width, height } = size
-  const rigScale = Math.min(width, height) / 900
-  const x = width * 0.73
-  const y = surfaceY - 118 * rigScale
+  const rigScale = (Math.min(width, height) / 900) * (width < 680 ? 1.2 : 1.34)
+  const x = width * (width < 680 ? 0.62 : 0.68)
+  const y = surfaceY - 146 * rigScale
   const vibration = Math.sin(progress * 70) * 1.4 * clamp((progress - 0.18) / 0.16)
 
   ctx.save()
   ctx.translate(x, y + vibration)
   ctx.scale(rigScale, rigScale)
 
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.34)'
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.24)'
   ctx.beginPath()
-  ctx.ellipse(118, 142, 196, 24, 0, 0, Math.PI * 2)
+  ctx.ellipse(126, 168, 230, 32, 0, 0, Math.PI * 2)
   ctx.fill()
 
-  ctx.fillStyle = '#070809'
-  drawRoundedRect(ctx, -12, 98, 315, 56, 10)
+  ctx.fillStyle = '#080a0d'
+  drawRoundedRect(ctx, -28, 118, 348, 70, 13)
   ctx.fill()
   ctx.fillStyle = '#1d232a'
-  drawRoundedRect(ctx, 6, 106, 278, 36, 18)
+  drawRoundedRect(ctx, -8, 128, 302, 44, 22)
   ctx.fill()
-  ctx.strokeStyle = '#4a5158'
-  ctx.lineWidth = 6
-  for (let i = 0; i < 7; i += 1) {
+  ctx.fillStyle = '#11161b'
+  drawRoundedRect(ctx, 10, 136, 250, 26, 13)
+  ctx.fill()
+  ctx.strokeStyle = '#59616a'
+  ctx.lineWidth = 7
+  for (let i = 0; i < 8; i += 1) {
     ctx.beginPath()
-    ctx.arc(35 + i * 36, 124, 11, 0, Math.PI * 2)
+    ctx.arc(24 + i * 34, 150, 11, 0, Math.PI * 2)
     ctx.stroke()
   }
 
-  ctx.fillStyle = '#d9dde0'
-  drawRoundedRect(ctx, 34, 26, 215, 76, 12)
+  const bodyGradient = ctx.createLinearGradient(24, 26, 274, 118)
+  bodyGradient.addColorStop(0, '#f0f2f3')
+  bodyGradient.addColorStop(0.55, '#cfd5d8')
+  bodyGradient.addColorStop(1, '#aeb7bd')
+  ctx.fillStyle = bodyGradient
+  drawRoundedRect(ctx, 24, 42, 238, 88, 14)
   ctx.fill()
-  ctx.fillStyle = '#bfc5c9'
-  drawRoundedRect(ctx, 170, 2, 78, 72, 10)
+  ctx.fillStyle = '#b9c0c5'
+  drawRoundedRect(ctx, 172, 8, 92, 84, 12)
   ctx.fill()
-  ctx.fillStyle = '#2a3036'
-  drawRoundedRect(ctx, 186, 14, 42, 30, 6)
+  ctx.fillStyle = '#222930'
+  drawRoundedRect(ctx, 190, 23, 46, 34, 6)
   ctx.fill()
+  ctx.fillStyle = 'rgba(248, 246, 241, 0.38)'
+  ctx.fillRect(35, 54, 102, 3)
+  ctx.fillRect(44, 116, 182, 3)
   ctx.fillStyle = '#e5091b'
-  ctx.fillRect(62, 58, 88, 10)
-  ctx.fillStyle = '#070809'
-  ctx.fillRect(62, 76, 142, 8)
+  ctx.fillRect(70, 78, 96, 11)
+  ctx.fillStyle = '#07090c'
+  ctx.fillRect(70, 101, 154, 9)
 
   ctx.save()
-  ctx.translate(38, 100)
-  ctx.rotate(-0.96)
-  ctx.fillStyle = '#14181d'
-  drawRoundedRect(ctx, -14, -12, 310, 24, 12)
+  ctx.translate(42, 126)
+  ctx.rotate(-0.98)
+  ctx.strokeStyle = '#090c10'
+  ctx.lineWidth = 31
+  ctx.lineCap = 'round'
+  ctx.beginPath()
+  ctx.moveTo(-10, 0)
+  ctx.lineTo(310, 0)
+  ctx.stroke()
+  ctx.strokeStyle = '#4b5259'
+  ctx.lineWidth = 11
+  ctx.beginPath()
+  ctx.moveTo(10, -2)
+  ctx.lineTo(294, -2)
+  ctx.stroke()
+  ctx.fillStyle = '#dfe4e7'
+  drawRoundedRect(ctx, -20, -22, 64, 44, 10)
   ctx.fill()
   ctx.fillStyle = '#e5091b'
-  ctx.fillRect(112, -3, 128, 6)
+  ctx.fillRect(116, -5, 138, 8)
   ctx.restore()
 
-  ctx.strokeStyle = '#f8f6f1'
-  ctx.globalAlpha = 0.55
-  ctx.lineWidth = 2
+  ctx.strokeStyle = '#7a838b'
+  ctx.lineWidth = 5
   ctx.beginPath()
-  ctx.moveTo(66, 30)
-  ctx.lineTo(140, 30)
+  ctx.moveTo(44, 127)
+  ctx.lineTo(26, 166)
   ctx.stroke()
-  ctx.globalAlpha = 1
+  ctx.beginPath()
+  ctx.moveTo(238, 92)
+  ctx.lineTo(292, 122)
+  ctx.stroke()
   ctx.restore()
 }
 
@@ -285,12 +325,32 @@ function drawHeroScene(ctx: CanvasRenderingContext2D, size: SceneSize, rawProgre
     ctx.stroke()
   }
 
+  if (cutaway > 0.02) {
+    ctx.save()
+    ctx.globalAlpha = cutaway * 0.42
+    ctx.fillStyle = 'rgba(17, 20, 24, 0.18)'
+    ctx.beginPath()
+    ctx.moveTo(0, surfaceY - height * 0.01)
+    ctx.bezierCurveTo(width * 0.28, surfaceY + height * 0.018, width * 0.54, surfaceY - height * 0.018, width, surfaceY + height * 0.012)
+    ctx.lineTo(width, surfaceY + height * 0.055)
+    ctx.bezierCurveTo(width * 0.58, surfaceY + height * 0.02, width * 0.3, surfaceY + height * 0.07, 0, surfaceY + height * 0.035)
+    ctx.closePath()
+    ctx.fill()
+    ctx.strokeStyle = 'rgba(248, 246, 241, 0.9)'
+    ctx.lineWidth = 2
+    ctx.beginPath()
+    ctx.moveTo(0, surfaceY - height * 0.004)
+    ctx.bezierCurveTo(width * 0.28, surfaceY + height * 0.018, width * 0.54, surfaceY - height * 0.018, width, surfaceY + height * 0.012)
+    ctx.stroke()
+    ctx.restore()
+  }
+
   const soilTop = surfaceY
   const layerHeight = (height - soilTop) / 4
   const soilColors = ['#d6d0c5', '#aaa49b', '#85827c', '#5d5f5d']
   soilColors.forEach((color, index) => {
     const y = soilTop + index * layerHeight
-    ctx.globalAlpha = 0.12 + cutaway * 0.88
+    ctx.globalAlpha = 0.02 + cutaway * 0.98
     ctx.fillStyle = color
     ctx.beginPath()
     ctx.moveTo(0, y)
@@ -306,7 +366,7 @@ function drawHeroScene(ctx: CanvasRenderingContext2D, size: SceneSize, rawProgre
 
   if (cutaway > 0.08) {
     ctx.save()
-    ctx.globalAlpha = cutaway * 0.26
+    ctx.globalAlpha = cutaway * 0.24
     ctx.strokeStyle = '#070809'
     for (let index = 0; index < 110; index += 1) {
       const x = (index * 83) % width
@@ -349,31 +409,55 @@ function drawHeroScene(ctx: CanvasRenderingContext2D, size: SceneSize, rawProgre
     ctx.restore()
   })
 
-  ctx.save()
-  ctx.globalAlpha = 0.12 + cutaway * 0.18
-  ctx.strokeStyle = '#e5091b'
-  ctx.lineWidth = compact ? 11 : 18
-  ctx.lineCap = 'round'
-  drawPath(ctx, samples, drillMotion * 0.94)
-  ctx.restore()
+  if (cutaway > 0.55) {
+    const clearanceAlpha = clamp((progress - 0.34) / 0.2) * clamp((0.68 - progress) / 0.18)
+    ctx.save()
+    ctx.globalAlpha = clearanceAlpha
+    ctx.strokeStyle = 'rgba(248, 246, 241, 0.95)'
+    ctx.lineWidth = compact ? 1.5 : 2
+    ctx.setLineDash([9, 7])
+    drawRoundedRect(ctx, width * 0.51, soilTop + layerHeight * 0.72, width * 0.26, layerHeight * 1.4, 12)
+    ctx.stroke()
+    ctx.setLineDash([])
+    ctx.fillStyle = 'rgba(248, 246, 241, 0.1)'
+    drawRoundedRect(ctx, width * 0.51, soilTop + layerHeight * 0.72, width * 0.26, layerHeight * 1.4, 12)
+    ctx.fill()
+    ctx.restore()
+  }
 
-  ctx.save()
-  ctx.globalAlpha = 0.38 + cutaway * 0.62
-  ctx.strokeStyle = '#e5091b'
-  ctx.lineWidth = compact ? 4 : 7
-  ctx.lineCap = 'round'
-  drawPath(ctx, samples, drillMotion * 0.94)
-  ctx.restore()
+  if (drillMotion > 0.006 && conduit < 0.98) {
+    const pilotFade = Math.pow(1 - conduit, 2)
+    ctx.save()
+    ctx.globalAlpha = (0.26 + cutaway * 0.28) * pilotFade
+    ctx.strokeStyle = '#111418'
+    ctx.lineWidth = compact ? 13 : 22
+    ctx.lineCap = 'round'
+    drawPath(ctx, samples, drillMotion * 0.94)
+    ctx.restore()
+
+    ctx.save()
+    ctx.globalAlpha = (0.74 + cutaway * 0.2) * pilotFade
+    ctx.strokeStyle = '#272e35'
+    ctx.lineWidth = compact ? 5 : 8
+    ctx.lineCap = 'round'
+    drawPath(ctx, samples, drillMotion * 0.94)
+    ctx.restore()
+  }
 
   if (conduit > 0) {
     ctx.save()
     ctx.lineCap = 'round'
-    ctx.strokeStyle = '#f8f6f1'
-    ctx.lineWidth = compact ? 5 : 10
-    drawPath(ctx, samples, conduit)
+    ctx.strokeStyle = 'rgba(229, 9, 27, 0.34)'
+    ctx.lineWidth = compact ? 15 : 26
+    drawPathFromEnd(ctx, samples, conduit)
     ctx.strokeStyle = '#e5091b'
-    ctx.lineWidth = compact ? 2 : 4
-    drawPath(ctx, samples, conduit)
+    ctx.lineWidth = compact ? 7 : 11
+    drawPathFromEnd(ctx, samples, conduit)
+    if (conduit > 0.52) {
+      ctx.strokeStyle = '#f8f6f1'
+      ctx.lineWidth = compact ? 1.5 : 3
+      drawPathFromEnd(ctx, samples, conduit)
+    }
     ctx.restore()
   }
 
@@ -414,6 +498,17 @@ function drawHeroScene(ctx: CanvasRenderingContext2D, size: SceneSize, rawProgre
   if (drillMotion > 0.006 && conduit < 0.98) {
     const head = pointAt(samples, drillMotion)
     const next = pointAt(samples, Math.min(1, drillMotion + 0.02))
+    ctx.save()
+    ctx.globalAlpha = 0.35
+    const halo = ctx.createRadialGradient(head.x, head.y, 0, head.x, head.y, compact ? 42 : 62)
+    halo.addColorStop(0, 'rgba(248, 246, 241, 0.48)')
+    halo.addColorStop(0.38, 'rgba(229, 9, 27, 0.14)')
+    halo.addColorStop(1, 'rgba(229, 9, 27, 0)')
+    ctx.fillStyle = halo
+    ctx.beginPath()
+    ctx.arc(head.x, head.y, compact ? 42 : 62, 0, Math.PI * 2)
+    ctx.fill()
+    ctx.restore()
     drawDrillHead(ctx, head, next, size, progress)
     ctx.save()
     ctx.fillStyle = 'rgba(17, 20, 24, 0.32)'

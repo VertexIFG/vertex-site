@@ -32,7 +32,7 @@ function routeSamples(size: SceneSize, surfaceY: number, count = 220) {
   const p1 = { x: width * 0.65, y: surfaceY + height * 0.1 }
   const p2 = { x: width * 0.58, y: surfaceY + height * 0.23 }
   const p3 = { x: width * 0.47, y: surfaceY + height * 0.285 }
-  const end = { x: width * 0.12, y: surfaceY + height * 0.3 }
+  const end = { x: width * 0.12, y: p3.y }
   const curveCount = Math.floor(count * 0.46)
   const straightCount = count - curveCount
   const curve = Array.from({ length: curveCount }, (_, index) => cubicPoint(index / (curveCount - 1), p0, p1, p2, p3))
@@ -98,6 +98,82 @@ function drawLabel(ctx: CanvasRenderingContext2D, text: string, x: number, y: nu
   ctx.font = `850 ${size}px Inter, system-ui, sans-serif`
   ctx.fillStyle = color
   ctx.fillText(text, x, y)
+  ctx.restore()
+}
+
+function drawUtilityPipe(
+  ctx: CanvasRenderingContext2D,
+  label: string,
+  color: string,
+  y: number,
+  segments: number[][],
+  compact: boolean,
+  alpha: number,
+) {
+  const diameter = compact ? 8 : 13
+  ctx.save()
+  ctx.globalAlpha = alpha
+  ctx.lineCap = 'round'
+
+  segments.forEach(([x1, x2]) => {
+    ctx.save()
+    ctx.shadowColor = 'rgba(7, 8, 9, 0.36)'
+    ctx.shadowBlur = compact ? 7 : 12
+    ctx.shadowOffsetY = compact ? 3 : 5
+    ctx.strokeStyle = 'rgba(7, 8, 9, 0.28)'
+    ctx.lineWidth = diameter + (compact ? 5 : 8)
+    ctx.beginPath()
+    ctx.moveTo(x1, y + diameter * 0.24)
+    ctx.lineTo(x2, y + diameter * 0.24)
+    ctx.stroke()
+    ctx.restore()
+
+    ctx.strokeStyle = '#111418'
+    ctx.lineWidth = diameter + 4
+    ctx.beginPath()
+    ctx.moveTo(x1, y)
+    ctx.lineTo(x2, y)
+    ctx.stroke()
+
+    ctx.strokeStyle = color
+    ctx.lineWidth = diameter
+    ctx.beginPath()
+    ctx.moveTo(x1, y)
+    ctx.lineTo(x2, y)
+    ctx.stroke()
+
+    ctx.strokeStyle = 'rgba(248, 246, 241, 0.55)'
+    ctx.lineWidth = Math.max(1.5, diameter * 0.22)
+    ctx.beginPath()
+    ctx.moveTo(x1 + diameter * 0.85, y - diameter * 0.28)
+    ctx.lineTo(x2 - diameter * 0.85, y - diameter * 0.28)
+    ctx.stroke()
+
+    ctx.fillStyle = color
+    ctx.strokeStyle = '#111418'
+    ctx.lineWidth = compact ? 1.4 : 2
+    ;[x1, x2].forEach((x) => {
+      ctx.beginPath()
+      ctx.ellipse(x, y, diameter * 0.42, diameter * 0.62, 0, 0, Math.PI * 2)
+      ctx.fill()
+      ctx.stroke()
+    })
+
+    if (x2 - x1 > 130) {
+      ctx.strokeStyle = 'rgba(17, 20, 24, 0.24)'
+      ctx.lineWidth = compact ? 1 : 1.5
+      const jointCount = Math.min(5, Math.floor((x2 - x1) / 150))
+      for (let index = 1; index <= jointCount; index += 1) {
+        const x = x1 + ((x2 - x1) * index) / (jointCount + 1)
+        ctx.beginPath()
+        ctx.moveTo(x, y - diameter * 0.64)
+        ctx.lineTo(x, y + diameter * 0.64)
+        ctx.stroke()
+      }
+    }
+  })
+
+  drawLabel(ctx, label, segments[0][0], y - diameter * 1.25, color, compact ? 9 : 12)
   ctx.restore()
 }
 
@@ -394,19 +470,7 @@ function drawHeroScene(ctx: CanvasRenderingContext2D, size: SceneSize, rawProgre
     { label: 'POTABLE WATER', color: '#2e8fff', y: soilTop + layerHeight * 1.86, segments: [[width * 0.59, width * 0.95]] },
   ]
   utilities.forEach((utility) => {
-    ctx.save()
-    ctx.globalAlpha = cutaway
-    ctx.strokeStyle = utility.color
-    ctx.lineWidth = compact ? 4 : 7
-    ctx.lineCap = 'round'
-    utility.segments.forEach(([x1, x2]) => {
-      ctx.beginPath()
-      ctx.moveTo(x1, utility.y)
-      ctx.lineTo(x2, utility.y)
-      ctx.stroke()
-    })
-    drawLabel(ctx, utility.label, utility.segments[0][0], utility.y - 11, utility.color, compact ? 9 : 12)
-    ctx.restore()
+    drawUtilityPipe(ctx, utility.label, utility.color, utility.y, utility.segments, compact, cutaway)
   })
 
   if (cutaway > 0.55) {

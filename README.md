@@ -34,14 +34,16 @@ The production output is generated in `dist/` and can be deployed to any static 
 
 ## Deployment
 
-Production is hosted on Cloudflare Pages:
+Production deploys are currently disabled while the site is being redesigned.
+
+Previous production hosting was Cloudflare Pages:
 
 - Project: `vertex-site`
 - Production branch: `main`
 - Cloudflare Pages URL: `https://vertex-site-doh.pages.dev`
-- Custom domains: `https://vertexifg.com`, `https://www.vertexifg.com`
+- Custom domains were detached from Cloudflare Pages on 2026-06-08.
 
-Pushes to `main` run `.github/workflows/deploy-cloudflare-pages.yml`, which installs dependencies, lints, builds, and deploys `dist/` to Cloudflare Pages using GitHub Actions secrets.
+The old deploy workflow is parked at `docs/deployment/deploy-cloudflare-pages.yml.disabled`. Move it back to `.github/workflows/deploy-cloudflare-pages.yml` only when the site is approved to go live again.
 
 ## Brand Notes
 

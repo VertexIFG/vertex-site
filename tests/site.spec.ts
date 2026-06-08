@@ -86,3 +86,48 @@ test('old brand and legacy email are absent', async ({ page }) => {
   await expect(page.locator('body')).not.toContainText(oldBrand)
   await expect(page.locator('body')).not.toContainText(oldEmail)
 })
+
+test('local test page renders as a design workbench', async ({ page }) => {
+  await page.goto('/test')
+
+  await expect(page.locator('.test-topbar')).toBeVisible()
+  await expect(page.locator('.test-brand img')).toHaveAttribute(
+    'src',
+    '/assets/vertex-logo-wordmark.png',
+  )
+  await expect(
+    page.getByRole('heading', { name: /Underground work with surface-level precision/i }),
+  ).toBeVisible()
+  await expect(page.getByRole('heading', { name: /Fleet imagery supports the brand/i })).toBeVisible()
+  await expect(page.locator('.test-hero img')).toHaveCount(0)
+  await expect(page.getByRole('link', { name: /support@vertexifg.com/i })).toHaveAttribute(
+    'href',
+    'mailto:support@vertexifg.com',
+  )
+})
+
+test('local test page loads assets and avoids mobile overflow', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto('/test')
+
+  await expect
+    .poll(async () =>
+      page.locator('img').evaluateAll((images) =>
+        images
+          .filter(
+            (image) =>
+              !(image as HTMLImageElement).complete ||
+              (image as HTMLImageElement).naturalWidth < 1,
+          )
+          .map((image) => (image as HTMLImageElement).src),
+      ),
+    )
+    .toEqual([])
+
+  const metrics = await page.evaluate(() => ({
+    scrollWidth: document.documentElement.scrollWidth,
+    clientWidth: document.documentElement.clientWidth,
+  }))
+
+  expect(metrics.scrollWidth).toBeLessThanOrEqual(metrics.clientWidth + 1)
+})

@@ -12,6 +12,7 @@ import {
   Zap,
 } from 'lucide-react'
 import './App.css'
+import TestPage from './TestPage'
 
 const sectors = [
   { label: 'Fiber optic', icon: Cable },
@@ -50,6 +51,10 @@ const gallery = [
 ]
 
 function App() {
+  if (window.location.pathname === '/test') {
+    return <TestPage />
+  }
+
   return (
     <main>
       <header className="site-header" aria-label="Primary navigation">

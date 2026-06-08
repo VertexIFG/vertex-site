@@ -16,6 +16,24 @@ npm install
 npm run dev
 ```
 
+The redesign workbench is available locally at `/test`:
+
+```text
+http://127.0.0.1:5173/test
+```
+
+Use this route for design iteration while production hosting remains disabled.
+
+The working design standard for this route is documented in `docs/design-brief.md`.
+
+Current Cloudflare Pages test URL:
+
+```text
+https://vertex-site-test.pages.dev/test
+```
+
+This is a separate test project and is not attached to `vertexifg.com`.
+
 ## QA
 
 ```bash

@@ -24,64 +24,100 @@
 .vertex-nav {
   position: fixed;
   z-index: 50;
-  top: 18px;
+  top: 16px;
   left: 50%;
-  width: min(1240px, calc(100% - 32px));
-  min-height: 68px;
+  width: min(1220px, calc(100% - 32px));
+  min-height: 74px;
   display: grid;
-  grid-template-columns: 218px 1fr auto;
+  grid-template-columns: 246px 1fr auto;
   align-items: center;
-  gap: 20px;
-  padding: 8px 10px 8px 14px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(248, 246, 241, 0.9);
-  box-shadow: 0 22px 70px rgba(7, 8, 9, 0.18);
+  gap: 14px;
+  padding: 8px;
+  border: 1px solid rgba(7, 8, 9, 0.1);
+  border-radius: 14px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(247, 248, 250, 0.94));
+  box-shadow:
+    0 24px 80px rgba(7, 8, 9, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
   transform: translateX(-50%);
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(24px);
 }
 
 .vertex-mark {
+  position: relative;
+  min-height: 58px;
   display: inline-flex;
   align-items: center;
-  width: 204px;
+  width: 100%;
+  padding: 0 18px;
+  border: 1px solid rgba(7, 8, 9, 0.08);
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.84);
 }
 
 .vertex-mark img {
-  width: 100%;
-  height: 42px;
+  width: 198px;
+  height: 44px;
   object-fit: contain;
   object-position: left center;
 }
 
 .vertex-nav nav {
+  min-height: 58px;
   display: flex;
   justify-content: center;
-  gap: 22px;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid rgba(7, 8, 9, 0.07);
+  border-radius: 10px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(239, 242, 246, 0.72));
 }
 
 .vertex-nav nav a,
 .nav-action {
-  min-height: 42px;
+  min-height: 48px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   color: var(--graphite);
-  font-size: 0.86rem;
+  font-size: 0.88rem;
   font-weight: 850;
   text-decoration: none;
 }
 
 .vertex-nav nav a {
   position: relative;
+  flex: 0 0 auto;
+  padding: 0 14px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: #303743;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
 }
 
-.vertex-nav nav a::after {
+.vertex-nav nav a:hover {
+  border-color: rgba(7, 8, 9, 0.08);
+  background: #ffffff;
+  color: var(--ink);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 30px rgba(7, 8, 9, 0.08);
+}
+
+.vertex-nav nav a::before {
   content: '';
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 5px;
+  left: 12px;
+  right: 12px;
+  bottom: 7px;
   height: 2px;
   background: var(--red);
   transform: scaleX(0);
@@ -89,18 +125,33 @@
   transition: transform 180ms ease;
 }
 
-.vertex-nav nav a:hover::after {
+.vertex-nav nav a:hover::before {
   transform: scaleX(1);
 }
 
 .nav-action {
-  padding: 0 14px;
-  background: var(--ink);
+  min-width: 148px;
+  padding: 0 18px;
+  border-radius: 10px;
+  background:
+    linear-gradient(180deg, #191d24, #070809);
   color: var(--white);
+  box-shadow:
+    0 16px 36px rgba(7, 8, 9, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  transition:
+    transform 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
 }
 
 .nav-action:hover {
-  background: var(--red);
+  background:
+    linear-gradient(180deg, #f0182a, var(--red));
+  transform: translateY(-1px);
+  box-shadow:
+    0 18px 38px rgba(229, 9, 27, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
 }
 
 .nav-action svg,
@@ -649,11 +700,20 @@
 
 @media (max-width: 1100px) {
   .vertex-nav {
-    grid-template-columns: 190px 1fr auto;
+    grid-template-columns: 210px 1fr auto;
   }
 
   .vertex-mark {
-    width: 178px;
+    padding: 0 14px;
+  }
+
+  .vertex-mark img {
+    width: 176px;
+  }
+
+  .vertex-nav nav a {
+    padding: 0 10px;
+    font-size: 0.82rem;
   }
 
   .hero,
@@ -709,15 +769,19 @@
     top: 10px;
     width: calc(100% - 20px);
     grid-template-columns: 1fr auto;
-    min-height: 58px;
-    padding: 8px 9px 8px 12px;
+    min-height: 62px;
+    padding: 6px;
+    border-radius: 12px;
   }
 
   .vertex-mark {
-    width: 154px;
+    min-height: 50px;
+    padding: 0 12px;
+    border-radius: 9px;
   }
 
   .vertex-mark img {
+    width: 154px;
     height: 34px;
   }
 
@@ -726,8 +790,11 @@
   }
 
   .nav-action {
-    width: 44px;
+    min-width: 50px;
+    width: 50px;
+    min-height: 50px;
     padding: 0;
+    border-radius: 9px;
     font-size: 0;
   }
 
@@ -778,8 +845,8 @@
   }
 
   .vertex-page h1 {
-    font-size: 4.22rem;
-    line-height: 0.86;
+    font-size: 3.48rem;
+    line-height: 0.9;
   }
 
   .vertex-page h2 {
@@ -881,7 +948,7 @@
 
 @media (max-width: 390px) {
   .vertex-page h1 {
-    font-size: 3.78rem;
+    font-size: 3.18rem;
   }
 
   .vertex-page h2 {
@@ -889,7 +956,11 @@
   }
 
   .vertex-mark {
-    width: 140px;
+    padding: 0 10px;
+  }
+
+  .vertex-mark img {
+    width: 138px;
   }
 }
 

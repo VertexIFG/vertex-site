@@ -109,13 +109,20 @@ function drawUtilityPipe(
   segments: number[][],
   compact: boolean,
   alpha: number,
+  sceneWidth: number,
 ) {
-  const diameter = compact ? 8 : 13
+  const diameter = compact ? 8 : 14
   ctx.save()
   ctx.globalAlpha = alpha
   ctx.lineCap = 'round'
 
-  segments.forEach(([x1, x2]) => {
+  segments.forEach(([x1, x2], segmentIndex) => {
+    const gradient = ctx.createLinearGradient(0, y - diameter, 0, y + diameter)
+    gradient.addColorStop(0, '#f8f6f1')
+    gradient.addColorStop(0.12, color)
+    gradient.addColorStop(0.58, color)
+    gradient.addColorStop(1, '#111418')
+
     ctx.save()
     ctx.shadowColor = 'rgba(7, 8, 9, 0.36)'
     ctx.shadowBlur = compact ? 7 : 12
@@ -129,17 +136,24 @@ function drawUtilityPipe(
     ctx.restore()
 
     ctx.strokeStyle = '#111418'
-    ctx.lineWidth = diameter + 4
+    ctx.lineWidth = diameter + 5
     ctx.beginPath()
     ctx.moveTo(x1, y)
     ctx.lineTo(x2, y)
     ctx.stroke()
 
-    ctx.strokeStyle = color
+    ctx.strokeStyle = gradient
     ctx.lineWidth = diameter
     ctx.beginPath()
     ctx.moveTo(x1, y)
     ctx.lineTo(x2, y)
+    ctx.stroke()
+
+    ctx.strokeStyle = 'rgba(7, 8, 9, 0.28)'
+    ctx.lineWidth = Math.max(1.2, diameter * 0.18)
+    ctx.beginPath()
+    ctx.moveTo(x1 + diameter * 0.7, y + diameter * 0.32)
+    ctx.lineTo(x2 - diameter * 0.7, y + diameter * 0.32)
     ctx.stroke()
 
     ctx.strokeStyle = 'rgba(248, 246, 241, 0.55)'
@@ -153,27 +167,59 @@ function drawUtilityPipe(
     ctx.strokeStyle = '#111418'
     ctx.lineWidth = compact ? 1.4 : 2
     ;[x1, x2].forEach((x) => {
+      if (x < -diameter * 2 || x > sceneWidth + diameter * 2) return
       ctx.beginPath()
       ctx.ellipse(x, y, diameter * 0.42, diameter * 0.62, 0, 0, Math.PI * 2)
       ctx.fill()
       ctx.stroke()
+      ctx.fillStyle = 'rgba(248, 246, 241, 0.42)'
+      ctx.beginPath()
+      ctx.ellipse(x - diameter * 0.09, y - diameter * 0.16, diameter * 0.13, diameter * 0.22, 0, 0, Math.PI * 2)
+      ctx.fill()
+      ctx.fillStyle = color
     })
 
     if (x2 - x1 > 130) {
-      ctx.strokeStyle = 'rgba(17, 20, 24, 0.24)'
-      ctx.lineWidth = compact ? 1 : 1.5
-      const jointCount = Math.min(5, Math.floor((x2 - x1) / 150))
+      const jointCount = Math.min(7, Math.floor((x2 - x1) / (compact ? 96 : 138)))
       for (let index = 1; index <= jointCount; index += 1) {
         const x = x1 + ((x2 - x1) * index) / (jointCount + 1)
+        if (x < -diameter || x > sceneWidth + diameter) continue
+
+        ctx.fillStyle = 'rgba(17, 20, 24, 0.72)'
+        drawRoundedRect(ctx, x - diameter * 0.18, y - diameter * 0.76, diameter * 0.36, diameter * 1.52, diameter * 0.15)
+        ctx.fill()
+        ctx.fillStyle = 'rgba(248, 246, 241, 0.28)'
+        ctx.fillRect(x - diameter * 0.11, y - diameter * 0.62, diameter * 0.08, diameter * 1.24)
+      }
+    }
+
+    if (x2 - x1 > 210 && !compact) {
+      const tapX = x1 + (x2 - x1) * (segmentIndex % 2 === 0 ? 0.68 : 0.34)
+      if (tapX > 26 && tapX < sceneWidth - 26) {
+        ctx.strokeStyle = '#111418'
+        ctx.lineWidth = diameter * 0.58
         ctx.beginPath()
-        ctx.moveTo(x, y - diameter * 0.64)
-        ctx.lineTo(x, y + diameter * 0.64)
+        ctx.moveTo(tapX, y)
+        ctx.lineTo(tapX + diameter * 1.1, y - diameter * 1.35)
         ctx.stroke()
+        ctx.strokeStyle = color
+        ctx.lineWidth = diameter * 0.38
+        ctx.beginPath()
+        ctx.moveTo(tapX, y)
+        ctx.lineTo(tapX + diameter * 1.1, y - diameter * 1.35)
+        ctx.stroke()
+        ctx.fillStyle = '#111418'
+        drawRoundedRect(ctx, tapX + diameter * 0.72, y - diameter * 1.78, diameter * 1.04, diameter * 0.7, diameter * 0.18)
+        ctx.fill()
+        ctx.fillStyle = color
+        drawRoundedRect(ctx, tapX + diameter * 0.86, y - diameter * 1.64, diameter * 0.76, diameter * 0.42, diameter * 0.12)
+        ctx.fill()
       }
     }
   })
 
-  drawLabel(ctx, label, segments[0][0], y - diameter * 1.25, color, compact ? 9 : 12)
+  const labelX = Math.max(24, Math.min(sceneWidth - 190, segments[0][0] + diameter * 1.4))
+  drawLabel(ctx, label, labelX, y - diameter * 1.45, color, compact ? 9 : 12)
   ctx.restore()
 }
 
@@ -456,21 +502,22 @@ function drawHeroScene(ctx: CanvasRenderingContext2D, size: SceneSize, rawProgre
   }
 
   const utilities = [
-    { label: 'ELECTRIC', color: '#e5091b', y: soilTop + layerHeight * 0.55, segments: [[width * 0.08, width * 0.46]] },
+    { label: 'ELECTRIC', color: '#e5091b', y: soilTop + layerHeight * 0.5, segments: [[-90, width * 0.47]] },
     {
       label: 'GAS',
       color: '#f3c634',
-      y: soilTop + layerHeight * 1.02,
+      y: soilTop + layerHeight * 0.98,
       segments: [
-        [width * 0.54, width * 0.58],
-        [width * 0.73, width * 0.93],
+        [-110, width * 0.5],
+        [width * 0.76, width + 120],
       ],
     },
-    { label: 'COMM / FIBER', color: '#f47b20', y: soilTop + layerHeight * 1.42, segments: [[width * 0.1, width * 0.39]] },
-    { label: 'POTABLE WATER', color: '#2e8fff', y: soilTop + layerHeight * 1.86, segments: [[width * 0.59, width * 0.95]] },
+    { label: 'COMM / FIBER', color: '#f47b20', y: soilTop + layerHeight * 1.37, segments: [[-70, width * 0.4]] },
+    { label: 'POTABLE WATER', color: '#2e8fff', y: soilTop + layerHeight * 1.84, segments: [[width * 0.56, width + 130]] },
+    { label: 'STORM / CASING', color: '#7b8794', y: soilTop + layerHeight * 2.33, segments: [[-120, width * 0.34]] },
   ]
   utilities.forEach((utility) => {
-    drawUtilityPipe(ctx, utility.label, utility.color, utility.y, utility.segments, compact, cutaway)
+    drawUtilityPipe(ctx, utility.label, utility.color, utility.y, utility.segments, compact, cutaway, width)
   })
 
   if (cutaway > 0.55) {

@@ -1,6 +1,6 @@
 import './Capabilities.css'
 
-// Vertex is the boring contractor: we drill the path and place the conduit,
+// Vertex drills the path and places the conduit,
 // casing, or carrier pipe — the utility owner's line runs through it.
 const rows = [
   {

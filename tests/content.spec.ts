@@ -2,19 +2,43 @@ import { expect, test } from '@playwright/test'
 
 test('document title, meta description, and og tags are correct', async ({ page }) => {
   await page.goto('/')
-  await expect(page).toHaveTitle(/Vertex Infrastructure Group/)
+  await expect(page).toHaveTitle('Vertex Infrastructure Group | Horizontal Directional Drilling')
   await expect(page.locator('meta[name="description"]')).toHaveAttribute(
     'content',
     /horizontal directional drilling/i,
   )
+  await expect(page.locator('meta[name="keywords"]')).toHaveAttribute(
+    'content',
+    /trenchless utility installation/i,
+  )
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://vertexifg.com/')
   await expect(page.locator('meta[property="og:title"]')).toHaveAttribute(
     'content',
-    'Vertex Infrastructure Group',
+    'Vertex Infrastructure Group | Horizontal Directional Drilling',
+  )
+  await expect(page.locator('meta[property="og:description"]')).toHaveAttribute(
+    'content',
+    /fiber, gas, electric, water, and sewer/i,
   )
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
     'content',
-    '/assets/og-image.jpg',
+    'https://vertexifg.com/assets/og-image.jpg',
   )
+  await expect(page.locator('meta[property="og:image:width"]')).toHaveAttribute('content', '1200')
+  await expect(page.locator('meta[property="og:image:height"]')).toHaveAttribute('content', '630')
+  await expect(page.locator('meta[property="og:url"]')).toHaveAttribute('content', 'https://vertexifg.com/')
+  await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute('content', 'summary_large_image')
+  await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute(
+    'content',
+    'https://vertexifg.com/assets/og-image.jpg',
+  )
+  const schema = await page.locator('script[type="application/ld+json"]').textContent()
+  expect(JSON.parse(schema || '{}')).toMatchObject({
+    '@type': 'LocalBusiness',
+    name: 'Vertex Infrastructure Group, LLC',
+    url: 'https://vertexifg.com/',
+    email: 'inquiries@vertexifg.com',
+  })
 })
 
 test('hero renders the brand claim and primary CTA in the divot', async ({ page }) => {

@@ -1,0 +1,187 @@
+.fleet {
+  padding: var(--space-6) 0;
+}
+
+.fleet-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: var(--space-5);
+  align-items: center;
+  margin-bottom: var(--space-4);
+}
+
+.fleet h2 {
+  font-size: var(--t-h2);
+  max-width: 12ch;
+}
+
+.fleet-sub {
+  margin-top: var(--space-3);
+  color: var(--gray-2);
+  max-width: 44ch;
+}
+
+/* ---- the staging plan sheet ---- */
+.fleet-plan {
+  border: 1px solid var(--line-d);
+  background: rgba(10, 11, 13, 0.6);
+}
+
+.fleet-plan svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.plan-frame {
+  fill: none;
+  stroke: var(--line-d);
+}
+
+.plan-mono {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  fill: var(--paper);
+}
+
+.plan-dim {
+  fill: var(--gray-2);
+}
+
+.plan-red {
+  fill: var(--red-on-dark);
+}
+
+.plan-ok {
+  fill: #6fe09a;
+}
+
+.plan-north circle {
+  fill: none;
+  stroke: var(--line-d);
+}
+
+.plan-north path {
+  fill: none;
+  stroke: var(--gray-2);
+  stroke-width: 1.5;
+}
+
+.plan-street {
+  stroke: rgba(244, 243, 240, 0.45);
+  stroke-width: 2;
+}
+
+.plan-dashes {
+  stroke: rgba(244, 243, 240, 0.25);
+  stroke-width: 2;
+  stroke-dasharray: 18 14;
+}
+
+.plan-arrow {
+  fill: none;
+  stroke: var(--gray-2);
+  stroke-width: 1.6;
+}
+
+.plan-zone {
+  fill: rgba(229, 9, 27, 0.07);
+  stroke: var(--red);
+  stroke-width: 1.3;
+  stroke-dasharray: 7 6;
+}
+
+.plan-cone {
+  fill: var(--red);
+}
+
+.plan-pit {
+  fill: var(--ink);
+  stroke: var(--red);
+  stroke-width: 1.6;
+}
+
+.plan-leader {
+  stroke: rgba(244, 243, 240, 0.4);
+  stroke-width: 1;
+}
+
+.plan-machine rect {
+  fill: #14181e;
+  stroke: rgba(244, 243, 240, 0.5);
+  stroke-width: 1.3;
+}
+
+.plan-driveway {
+  fill: none;
+  stroke: rgba(244, 243, 240, 0.4);
+  stroke-width: 1.3;
+  stroke-dasharray: 5 5;
+}
+
+/* ---- the standards ledger ---- */
+.fleet-rows {
+  border-top: 1px solid var(--line-d);
+}
+
+.fleet-row {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) minmax(0, 1.5fr);
+  align-items: center;
+  gap: var(--space-3);
+  padding: 26px 12px;
+  border-bottom: 1px solid var(--line-d);
+  transition: background 240ms var(--ease-mech);
+}
+
+.fleet-row:hover {
+  background: rgba(244, 243, 240, 0.04);
+}
+
+.fleet-index {
+  color: var(--gray-2);
+}
+
+.fleet-row h3 {
+  font-size: var(--t-h3);
+}
+
+.fleet-row p {
+  color: var(--gray-2);
+  font-size: var(--t-small);
+  max-width: 56ch;
+}
+
+@media (max-width: 900px) {
+  .fleet {
+    padding: var(--space-5) 0;
+  }
+
+  .fleet-head {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+
+  .fleet-row {
+    grid-template-columns: 48px minmax(0, 1fr);
+    grid-template-areas:
+      'index title'
+      'index body';
+    row-gap: 10px;
+    align-items: start;
+  }
+
+  .fleet-index {
+    grid-area: index;
+  }
+
+  .fleet-row h3 {
+    grid-area: title;
+  }
+
+  .fleet-row p {
+    grid-area: body;
+  }
+}

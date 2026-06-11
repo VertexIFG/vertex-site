@@ -1,0 +1,117 @@
+.records {
+  padding: var(--space-6) 0;
+}
+
+.records-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-5);
+  align-items: start;
+}
+
+.records-copy {
+  position: sticky;
+  top: calc(var(--header-h) + var(--space-3));
+}
+
+.records-copy > .mono {
+  margin-bottom: var(--space-3);
+}
+
+.records h2 {
+  font-size: var(--t-h2);
+  max-width: 14ch;
+}
+
+.records-body {
+  margin-top: var(--space-3);
+  color: var(--gray-3);
+}
+
+.records-chain {
+  position: relative;
+  list-style: none;
+  padding-left: 36px;
+}
+
+/* chain-of-custody line; scrub-drawn by MotionRoot */
+.records-chain-line {
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  bottom: 8px;
+  width: 1px;
+  background: var(--ink);
+}
+
+.records-step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--line-l);
+}
+
+.records-step::before {
+  content: '';
+  position: absolute;
+  left: -32px;
+  top: 30px;
+  width: 9px;
+  height: 9px;
+  background: var(--paper);
+  border: 1.5px solid var(--ink);
+}
+
+.records-num {
+  color: var(--gray-3);
+}
+
+.records-phase {
+  font-family: var(--font-display);
+  font-variation-settings: 'wdth' var(--wdth-display);
+  font-weight: 800;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.records-text {
+  color: var(--gray-3);
+  font-size: var(--t-small);
+  max-width: 52ch;
+}
+
+.records-artifact {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  margin-top: 6px;
+  padding: 7px 12px;
+  border: 1px solid var(--line-l);
+  color: var(--ink);
+}
+
+.records-artifact-tick {
+  width: 7px;
+  height: 7px;
+  background: var(--red);
+  flex-shrink: 0;
+}
+
+@media (max-width: 900px) {
+  .records {
+    padding: var(--space-5) 0;
+  }
+
+  .records-inner {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  .records-copy {
+    position: static;
+  }
+}

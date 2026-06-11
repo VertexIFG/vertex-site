@@ -1,0 +1,37 @@
+.route3d-canvas {
+  position: absolute !important;
+  inset: 0;
+}
+
+.route3d-label-wrap {
+  pointer-events: none;
+}
+
+.route3d-label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 9px;
+  background: rgba(10, 11, 13, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  white-space: nowrap;
+  transform: translateY(-50%);
+}
+
+.route3d-label-sta {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--red-on-dark);
+}
+
+.route3d-label-desc {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--paper);
+}

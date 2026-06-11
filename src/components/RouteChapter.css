@@ -1,0 +1,87 @@
+.route-chapter {
+  padding: var(--space-6) 0;
+}
+
+/* webgl mode: pinned full-viewport scene */
+.route-chapter[data-scene-mode='webgl'] {
+  padding: 0;
+}
+
+.route-sticky {
+  position: relative;
+  height: 100svh;
+  overflow: hidden;
+  background: var(--ink);
+  /* identical survey grid to the section chapter below — the WebGL canvas is
+     transparent, so both animations live on the same field */
+  background-image:
+    linear-gradient(var(--grid-d) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-d) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
+
+.route-scene-fade {
+  position: absolute;
+  inset: 0;
+}
+
+.route-overlay {
+  position: absolute;
+  top: calc(var(--header-h) + var(--space-3));
+  left: 0;
+  right: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.route-overlay > .mono {
+  margin-bottom: var(--space-2);
+}
+
+.route-overlay h2 {
+  font-size: var(--t-h2);
+  max-width: 13ch;
+}
+
+.route-overlay .route-copy {
+  margin-top: var(--space-2);
+  max-width: 48ch;
+}
+
+.route-telemetry-live {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 20px;
+  z-index: 2;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.route-inner {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.route-heading > .mono {
+  margin-bottom: var(--space-3);
+}
+
+.route-heading h2 {
+  font-size: var(--t-h2);
+}
+
+.route-copy {
+  margin-top: var(--space-3);
+  color: var(--gray-2);
+}
+
+.route-telemetry {
+  color: var(--gray-2);
+}
+
+@media (max-width: 900px) {
+  .route-chapter {
+    padding: var(--space-5) 0;
+  }
+}

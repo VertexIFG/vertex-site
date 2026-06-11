@@ -1,0 +1,37 @@
+.route-static {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.route-static-svg {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line-d);
+  background: #0a0b0d;
+}
+
+.route-static-text {
+  fill: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+}
+
+.route-static-stations {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-2);
+  list-style: none;
+}
+
+.route-static-stations li {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 0 0;
+  border-top: 1px solid var(--line-d);
+}
+
+.route-static-stations .mono:last-child {
+  color: var(--gray-2);
+}

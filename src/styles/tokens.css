@@ -1,0 +1,70 @@
+/* ============================================================
+   VERTEX IFG — design tokens. The single source of truth.
+   Concept: "AS-BUILT" — an engineering document for an
+   underground route. Hard edges, 1px rules, mono annotations.
+   ============================================================ */
+
+:root {
+  /* ---- color ---- */
+  --ink: #0a0b0d;
+  --black: #000000;
+  --paper: #f4f3f0;
+  --white: #ffffff;
+  --red: #e5091b;
+  --red-deep: #b40714;
+  /* #e5091b on ink is 3.9:1 — fails AA for small text. Use this lifted
+     red for any sub-display red type on dark surfaces. */
+  --red-on-dark: #ff5a66;
+  --gray-1: #2a2e34;
+  --gray-2: #7d8791;
+  --gray-3: #5f6570;
+  --line-d: rgba(255, 255, 255, 0.14);
+  --line-l: rgba(10, 11, 13, 0.14);
+  --grid-d: rgba(255, 255, 255, 0.05);
+  --grid-l: rgba(10, 11, 13, 0.045);
+
+  /* APWA uniform locate color codes — utility rows + bore pipes only */
+  --apwa-electric: #e5091b;
+  --apwa-gas: #f3c634;
+  --apwa-comm: #f47b20;
+  --apwa-water: #2e8fff;
+
+  /* ---- typography ---- */
+  --font-display: 'Archivo', 'Archivo Fallback', 'Arial Narrow', sans-serif;
+  --font-body: 'Inter', 'Inter Fallback', system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --t-display: clamp(3.4rem, 1rem + 8.5vw, 10.5rem);
+  --t-h2: clamp(1.9rem, 1rem + 2.9vw, 3.7rem);
+  --t-h3: clamp(1.35rem, 1rem + 1vw, 1.9rem);
+  --t-body: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --t-small: 0.875rem;
+  --t-mono: clamp(0.72rem, 0.68rem + 0.2vw, 0.8rem);
+  --t-ghost: clamp(10rem, 24vw, 26rem);
+
+  --track-mono: 0.12em;
+  --wdth-display: 118;
+
+  /* ---- layout ---- */
+  --gutter: max(24px, calc((100vw - 1320px) / 2));
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 32px;
+  --space-4: 56px;
+  --space-5: 96px;
+  --space-6: 150px;
+  /* floating bar: 16px offset + 62px panel */
+  --header-h: 80px;
+
+  /* ---- z-index map ---- */
+  --z-grain: 80;
+  --z-header: 90;
+  --z-progress: 95;
+  --z-cursor: 100;
+  --z-preloader: 110;
+
+  /* ---- motion ---- */
+  --ease-mech: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-hover: 220ms;
+}

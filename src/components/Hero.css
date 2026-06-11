@@ -1,0 +1,279 @@
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  /* faint survey grid on ink */
+  background-image:
+    linear-gradient(var(--grid-d) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-d) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
+
+/* ---- the line field ---- */
+.hero-field {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-grade {
+  stroke: rgba(244, 243, 240, 0.26);
+  stroke-width: 1.5;
+}
+
+.hero-tick line {
+  stroke: rgba(244, 243, 240, 0.45);
+  stroke-width: 1.5;
+}
+
+.hero-tick rect {
+  fill: var(--ink);
+  stroke: var(--red);
+  stroke-width: 1.5;
+}
+
+.hero-bore-draw {
+  fill: none;
+  stroke: var(--red);
+  stroke-width: 3;
+}
+
+.hero-march {
+  fill: none;
+  stroke: rgba(255, 90, 102, 0.55);
+  stroke-width: 3;
+  stroke-dasharray: 14 92;
+  stroke-linecap: round;
+  animation: hero-march 5.5s linear infinite;
+}
+
+@keyframes hero-march {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -106;
+  }
+}
+
+/* ---- composition: type top, line band center, actions bottom ---- */
+.hero-top {
+  position: relative;
+  z-index: 1;
+  margin-top: calc(var(--header-h) + 14svh);
+}
+
+.hero h1 {
+  /* sized so each designed line holds as ONE line down to tablet width */
+  font-size: clamp(2.6rem, 1.1rem + 5vw, 5.5rem);
+  line-height: 0.98;
+}
+
+.hero-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.06em;
+  margin-bottom: -0.06em;
+}
+
+.hero-line > span {
+  display: block;
+}
+
+.hero-accent {
+  font-style: normal;
+  color: var(--red);
+}
+
+/* ---- primary CTA: nests dead-center in the symmetric bowl ---- */
+.hero-cta {
+  position: absolute;
+  left: 50%;
+  top: 63%;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+/* sonar echoes: the button's outline radiating outward, like a locate signal */
+.hero-cta-echo {
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(229, 9, 27, 0.65);
+  border-radius: 12px;
+  pointer-events: none;
+  opacity: 0;
+  animation: cta-echo 3.2s cubic-bezier(0.2, 0.6, 0.35, 1) infinite;
+}
+
+.hero-cta-echo-2 {
+  animation-delay: 1.6s;
+}
+
+@keyframes cta-echo {
+  0% {
+    transform: scale(1);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(1.45, 2.05);
+    opacity: 0;
+  }
+}
+
+.cta-major {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+  min-height: 66px;
+  padding: 8px 8px 8px 32px;
+  background: var(--red);
+  border-radius: 12px;
+  box-shadow:
+    0 10px 30px rgba(229, 9, 27, 0.35),
+    0 2px 8px rgba(229, 9, 27, 0.4);
+  overflow: hidden;
+  transition: box-shadow 280ms var(--ease-mech);
+}
+
+.cta-major:hover {
+  box-shadow:
+    0 16px 44px rgba(229, 9, 27, 0.45),
+    0 2px 10px rgba(229, 9, 27, 0.5);
+}
+
+/* deep-red wipe under the content */
+.cta-major::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--red-deep);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 320ms var(--ease-mech);
+}
+
+.cta-major:hover::before {
+  transform: scaleX(1);
+}
+
+/* periodic sheen sweeping across */
+.cta-major::after {
+  content: '';
+  position: absolute;
+  top: -40%;
+  bottom: -40%;
+  left: -30%;
+  width: 34%;
+  background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.28), transparent);
+  transform: skewX(-18deg) translateX(0);
+  animation: cta-sheen 4.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes cta-sheen {
+  0%,
+  62% {
+    transform: skewX(-18deg) translateX(0);
+  }
+  88%,
+  100% {
+    transform: skewX(-18deg) translateX(520%);
+  }
+}
+
+/* label: duplicate waits below the clip, both ride up on hover */
+.cta-major-label {
+  position: relative;
+  z-index: 1;
+  display: block;
+  overflow: hidden;
+}
+
+.cta-major-text {
+  display: block;
+  color: var(--white);
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+  font-weight: 500;
+  letter-spacing: var(--track-mono);
+  text-transform: uppercase;
+  line-height: 1.3;
+  white-space: nowrap;
+  transition: transform 340ms var(--ease-mech);
+}
+
+.cta-major-text + .cta-major-text {
+  position: absolute;
+  top: 100%;
+  left: 0;
+}
+
+.cta-major:hover .cta-major-text {
+  transform: translateY(-100%);
+}
+
+/* arrow chip: white plate; arrow exits top-right, twin re-enters */
+.cta-major-chip {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  background: var(--white);
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.cta-major-chip svg {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  color: var(--ink);
+  transition: transform 340ms var(--ease-mech);
+}
+
+.cta-major-chip svg:last-child {
+  transform: translate(-26px, 26px);
+}
+
+.cta-major:hover .cta-major-chip svg:first-child {
+  transform: translate(26px, -26px);
+}
+
+.cta-major:hover .cta-major-chip svg:last-child {
+  transform: translate(0, 0);
+}
+
+/* below the gsap "full motion" breakpoint the field is CSS-positioned only */
+@media (max-width: 760px) {
+  .hero-field {
+    transform: translateY(-6%);
+    opacity: 0.8;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero-top {
+    margin-top: calc(var(--header-h) + 9svh);
+  }
+
+  .hero h1 {
+    max-width: 10ch;
+    line-height: 1.02;
+  }
+
+  .hero-cta {
+    top: auto;
+    bottom: 13svh;
+  }
+}

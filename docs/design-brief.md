@@ -85,3 +85,19 @@ Industrial precision, field confidence, premium utility operator, restrained mot
 3. Compare against the references above.
 4. Fix typography, spacing, density, imagery, overflow, and bland sections.
 5. Repeat until the page looks intentionally designed.
+
+## Implemented Direction (2026-06-10 — "AS-BUILT" redesign)
+
+The shipped site follows this brief with these resolved decisions:
+
+- Concept: the page behaves like an engineering document — surface photography above,
+  technical drawing below; stationed, measured, stamped.
+- Typography: Archivo variable (display, wdth 118 / wght 800-900) + Inter (body) +
+  IBM Plex Mono (annotations), self-hosted latin subsets.
+- Motion: GSAP ScrollTrigger + SplitText with Lenis smooth scroll (adopted); Motion retained
+  for micro-interaction shells. All pins/scrubs disable under reduced motion and on mobile.
+- 3D: a purposeful full-bleed React Three Fiber plan-view survey flythrough ("The route is
+  the product."), lazy-loaded, with a static SVG fallback — paired with the 2D as-built bore
+  profile chapter (the same route in section).
+- The banned-elements list was honored: no gradients, glass cards, bento grids, pills, or
+  border radii anywhere in the shipped system.

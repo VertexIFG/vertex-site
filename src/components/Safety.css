@@ -1,0 +1,153 @@
+.safety {
+  padding: var(--space-6) 0;
+  /* same survey-grid field as the animations — one continuous world */
+  background-image:
+    linear-gradient(var(--grid-d) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-d) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
+
+.safety-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: var(--space-4);
+  align-items: center;
+  margin-bottom: var(--space-4);
+}
+
+.safety h2 {
+  font-size: var(--t-h2);
+  max-width: 14ch;
+}
+
+.safety-compare {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.safety-panel {
+  border: 1px solid var(--line-d);
+  background: rgba(10, 11, 13, 0.6);
+}
+
+.safety-panel svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* compare drawing language */
+.cmp-grade {
+  fill: none;
+  stroke: rgba(244, 243, 240, 0.5);
+  stroke-width: 2;
+}
+
+.cmp-trench {
+  fill: rgba(229, 9, 27, 0.08);
+  stroke: var(--red);
+  stroke-width: 1.5;
+  stroke-dasharray: 6 5;
+}
+
+.cmp-spoil {
+  fill: none;
+  stroke: rgba(244, 243, 240, 0.3);
+  stroke-width: 1.5;
+}
+
+.cmp-scar {
+  stroke: rgba(229, 9, 27, 0.45);
+  stroke-width: 1.5;
+}
+
+.cmp-pipe-cut {
+  stroke: rgba(244, 243, 240, 0.35);
+  stroke-width: 3;
+}
+
+.cmp-bore {
+  fill: none;
+  stroke: var(--red);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.cmp-pit {
+  fill: var(--ink);
+  stroke: var(--red);
+  stroke-width: 1.5;
+}
+
+.cmp-label {
+  font-size: 11px;
+  fill: var(--gray-2);
+}
+
+.cmp-verdict {
+  font-size: 16px;
+}
+
+.cmp-verdict.cut {
+  fill: var(--red-on-dark);
+}
+
+.cmp-verdict.bore {
+  fill: #6fe09a;
+}
+
+/* pillars — same ruled-grid language as Why Vertex */
+.safety-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--line-d);
+  border-left: 1px solid var(--line-d);
+}
+
+.safety-cell {
+  padding: var(--space-4) var(--space-4) var(--space-4) var(--space-3);
+  border-right: 1px solid var(--line-d);
+  border-bottom: 1px solid var(--line-d);
+  transition: background 240ms var(--ease-mech);
+}
+
+.safety-cell:hover {
+  background: rgba(244, 243, 240, 0.04);
+}
+
+.safety-index {
+  display: block;
+  color: var(--gray-2);
+  margin-bottom: var(--space-3);
+}
+
+.safety-cell h3 {
+  font-size: var(--t-h3);
+  max-width: 16ch;
+}
+
+.safety-cell p {
+  margin-top: 14px;
+  color: var(--gray-2);
+  font-size: var(--t-small);
+  max-width: 42ch;
+}
+
+@media (max-width: 900px) {
+  .safety {
+    padding: var(--space-5) 0;
+  }
+
+  .safety-head {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+
+  .safety-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .safety-cell {
+    padding: var(--space-3) var(--space-3) var(--space-3) var(--space-2);
+  }
+}

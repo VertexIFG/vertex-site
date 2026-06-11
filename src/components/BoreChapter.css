@@ -1,0 +1,304 @@
+.bore-section {
+  position: relative;
+  /* same survey-grid ink field as the hero — continuous with the plan view */
+  background-image:
+    linear-gradient(var(--grid-d) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-d) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
+
+.bore-sticky {
+  position: relative;
+  height: 100svh;
+  overflow: hidden;
+}
+
+.bore-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---- the earth, the road, the rig ---- */
+.bore-speckle {
+  fill: rgba(244, 243, 240, 0.055);
+}
+
+.bore-road rect {
+  fill: #1c2026;
+  stroke: rgba(244, 243, 240, 0.25);
+  stroke-width: 1;
+}
+
+.bore-road-dash {
+  stroke: rgba(244, 243, 240, 0.35);
+  stroke-width: 2;
+  stroke-dasharray: 16 12;
+}
+
+.bore-rig-track {
+  fill: #14171c;
+  stroke: rgba(244, 243, 240, 0.4);
+  stroke-width: 1.2;
+}
+
+.bore-rig-body {
+  fill: #181c22;
+  stroke: rgba(244, 243, 240, 0.5);
+  stroke-width: 1.2;
+}
+
+.bore-rig-cab {
+  fill: #11141a;
+  stroke: rgba(244, 243, 240, 0.4);
+  stroke-width: 1.2;
+}
+
+.bore-rig-mast {
+  stroke: #2a2e34;
+  stroke-width: 6;
+  stroke-linecap: round;
+}
+
+.bore-rig-mast-accent {
+  stroke: var(--red);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+/* ---- locate paint marks on the surface ---- */
+.bore-mark line {
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+/* ---- phase chip ---- */
+.bore-phase text {
+  fill: var(--red-on-dark);
+  opacity: 0;
+}
+
+/* ---- pass 1: pilot string ---- */
+.bore-pilot {
+  fill: none;
+  stroke: rgba(255, 90, 102, 0.65);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+
+/* ---- reamer ---- */
+.bore-reamer {
+  opacity: 0;
+}
+
+.bore-reamer-teeth line {
+  stroke: var(--red);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+
+.bore-reamer-body {
+  fill: var(--ink);
+  stroke: var(--red);
+  stroke-width: 2.4;
+}
+
+.bore-reamer-eye {
+  fill: #ffffff;
+}
+
+/* ---- section-cut blades (A / A′) ---- */
+.bore-blade {
+  stroke: var(--red);
+  stroke-width: 1.5;
+  stroke-dasharray: 10 8;
+  opacity: 0.8;
+}
+
+.bore-cut-tag rect {
+  fill: var(--ink);
+  stroke: var(--red);
+  stroke-width: 1.5;
+}
+
+.bore-cut-tag text {
+  fill: var(--red-on-dark);
+}
+
+/* ---- linework ---- */
+.bore-grade-line {
+  stroke: rgba(244, 243, 240, 0.28);
+  stroke-width: 1.5;
+}
+
+.bore-tick {
+  stroke: rgba(244, 243, 240, 0.45);
+  stroke-width: 1.5;
+}
+
+.bore-tick-cap {
+  fill: var(--ink);
+  stroke: var(--red);
+  stroke-width: 1.5;
+}
+
+.bore-strata {
+  stroke: rgba(244, 243, 240, 0.07);
+  stroke-width: 1;
+  stroke-dasharray: 5 9;
+}
+
+/* ---- type inside the drawing ---- */
+.bore-mono {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  fill: var(--paper);
+}
+
+.bore-dim {
+  fill: rgba(244, 243, 240, 0.45);
+}
+
+/* ---- existing utilities ---- */
+.bore-utility-pipe {
+  fill: rgba(10, 11, 13, 0.6);
+  stroke-width: 2.5;
+}
+
+.bore-utility-halo {
+  fill: none;
+  stroke-width: 1;
+  stroke-dasharray: 4 7;
+  opacity: 0.45;
+}
+
+.bore-ring {
+  fill: none;
+  stroke-width: 1.5;
+  opacity: 0;
+}
+
+.bore-utility-label {
+  font-size: 12px;
+}
+
+.bore-cleared {
+  fill: var(--red-on-dark);
+  opacity: 0;
+}
+
+/* ---- the bore itself ---- */
+.bore-line {
+  fill: none;
+  stroke: var(--red);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+}
+
+.bore-line-glow {
+  stroke: rgba(229, 9, 27, 0.28);
+  stroke-width: 11;
+}
+
+.bore-core {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.85);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+}
+
+/* once installed, the line carries a slow current — it's alive */
+.bore-current {
+  fill: none;
+  stroke: rgba(255, 90, 102, 0.9);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-dasharray: 12 88;
+  opacity: 0;
+  animation: bore-current-march 4.5s linear infinite;
+}
+
+@keyframes bore-current-march {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+
+.bore-head path {
+  fill: var(--red);
+}
+
+.bore-readout {
+  fill: var(--red-on-dark);
+}
+
+/* ---- closeout stamp ---- */
+.bore-stamp {
+  opacity: 0;
+}
+
+.bore-stamp rect {
+  fill: rgba(10, 11, 13, 0.7);
+  stroke: var(--red);
+  stroke-width: 1.5;
+}
+
+/* ---- heading overlay ---- */
+.bore-overlay {
+  position: absolute;
+  top: calc(var(--header-h) + var(--space-3));
+  left: 0;
+  right: 0;
+  pointer-events: none;
+}
+
+/* single line at desktop so the scene below never collides with the type */
+.bore-overlay h2 {
+  font-size: var(--t-h2);
+}
+
+.bore-copy {
+  margin-top: var(--space-2);
+  max-width: 56ch;
+  color: var(--gray-2);
+}
+
+/* ---- static fallback (mobile / reduced motion): natural flow, full scene ---- */
+.bore-section[data-static='true'] .bore-sticky {
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5) 0 var(--space-4);
+  overflow: visible;
+}
+
+.bore-section[data-static='true'] .bore-svg {
+  position: static;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1440 / 820;
+}
+
+.bore-section[data-static='true'] .bore-overlay {
+  position: static;
+  order: -1;
+  pointer-events: auto;
+}
+
+@media (max-width: 900px) {
+  .bore-overlay h2 {
+    font-size: clamp(2rem, 8vw, 3.2rem);
+  }
+
+  .bore-copy {
+    font-size: var(--t-small);
+    max-width: 38ch;
+  }
+}

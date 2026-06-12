@@ -4,7 +4,7 @@
 // route-specific head tags, and — for subpages — WebPage/Breadcrumb JSON-LD.
 // Also emits dist/404.html, which switches Cloudflare Pages from SPA
 // fallback to real 404 statuses for unknown paths.
-import { mkdir, readFile, rm, writeFile } from 'node:fs/promises'
+import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 
 const ROOT = path.resolve(import.meta.dirname, '..')
@@ -98,5 +98,33 @@ const notFound = `<!doctype html>
 `
 await writeFile(path.join(ROOT, 'dist/404.html'), notFound)
 console.log('wrote dist/404.html')
+
+// Sitemap with image extensions: equipment cutouts (full-size variants only)
+// surface in Google Images from the home page entry.
+const lastmod = new Date().toISOString().slice(0, 10)
+const assets = await readdir(path.join(ROOT, 'dist/assets'))
+const equipmentImages = assets
+  .filter((f) => f.startsWith('dbc-') && f.endsWith('.webp') && !f.endsWith('-1x.webp'))
+  .sort()
+  .map((f) => `    <image:image><image:loc>${ORIGIN}/assets/${f}</image:loc></image:image>`)
+  .join('\n')
+
+const urlEntry = (loc, priority, images = '') =>
+  `  <url>
+    <loc>${loc}</loc>
+    <lastmod>${lastmod}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>${priority}</priority>
+${images ? `${images}\n` : ''}  </url>`
+
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+${urlEntry(`${ORIGIN}/`, '1.0', equipmentImages)}
+${urlEntry(`${ORIGIN}/safety`, '0.7')}
+${urlEntry(`${ORIGIN}/environment`, '0.7')}
+</urlset>
+`
+await writeFile(path.join(ROOT, 'dist/sitemap.xml'), sitemap)
+console.log(`wrote dist/sitemap.xml (lastmod ${lastmod}, ${equipmentImages.split('<image:loc>').length - 1} images)`)
 
 await rm(path.join(ROOT, 'dist-server'), { recursive: true, force: true })

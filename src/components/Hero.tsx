@@ -11,12 +11,19 @@ import './Hero.css'
 const BORE_PATH =
   'M -60 470 H 200 C 390 470 470 604 720 604 C 970 604 1050 470 1240 470 H 1500'
 
+// The headline is prerendered and painted well before the JS bundle arrives.
+// On a fast connection the entrance replays imperceptibly; on a slow one it
+// would yank already-read text off screen (and push LCP out) — so when the
+// bundle boots late, skip the entrance and keep the static frame.
+const bootedLate = () => performance.now() > 2200
+
 function Hero() {
   const sectionRef = useRef<HTMLElement | null>(null)
   const reduced = useReducedMotion()
 
   useGSAP(
     () => {
+      if (bootedLate()) return
       const mm = gsap.matchMedia()
 
       mm.add(MM.full, () => {

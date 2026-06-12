@@ -56,6 +56,8 @@ test('initial JS payload stays under budget on the production build', async ({ p
   let jsBytes = 0
   page.on('response', async (response) => {
     if (!/javascript/.test(response.headers()['content-type'] ?? '')) return
+    // budget guards our own build output; third-party tags (GA4) are excluded
+    if (new URL(response.url()).origin !== new URL(page.url()).origin) return
     try {
       jsBytes += (await response.body()).byteLength
     } catch {

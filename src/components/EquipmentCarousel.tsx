@@ -21,8 +21,8 @@ const units = [
     role: 'Long Crossings',
     body: 'Step-up thrust and torque for longer runs, larger-diameter product, and harder ground.',
     image: 'dbc-d40x55-drill',
-    width: 670,
-    height: 450,
+    width: 1340,
+    height: 900,
     specs: [
       ['Model', 'D40x55'],
       ['Thrust / Pullback', '40,000 lb'],
@@ -64,8 +64,8 @@ const units = [
     role: 'Hydro Excavation',
     body: 'Truck-mounted hydro excavation for fast daylighting, deep potholes, and spoil hauled off in the same pass.',
     image: 'dbc-hydro-truck',
-    width: 525,
-    height: 350,
+    width: 1050,
+    height: 700,
     specs: [
       ['Unit', 'VX1150'],
       ['Function', 'Hydro excavation'],
@@ -78,8 +78,8 @@ const units = [
     role: 'Site Logistics',
     body: 'Stocked service body, crew cab, and a conduit reel trailer — tooling, parts, and product arrive with the crew in one move.',
     image: 'dbc-support-truck',
-    width: 525,
-    height: 350,
+    width: 1050,
+    height: 700,
     specs: [
       ['Setup', 'Crew cab + service body'],
       ['Tow', 'Conduit reel trailer'],

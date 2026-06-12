@@ -66,9 +66,15 @@ test('all chapters render with their headings', async ({ page }) => {
   }
 })
 
-test('equipment chapter lists the Vermeer fleet with corrected MX300 label', async ({ page }) => {
+test('equipment chapter lists the full fleet in order with corrected MX300 label', async ({ page }) => {
   await page.goto('/')
-  const expected = [/Vermeer D24x40 S3/i, /Vermeer MX300 Mixing System/i, /Vermeer VX50 Vacuum Excavator/i]
+  const expected = [
+    /Vermeer D24x40 S3/i,
+    /Vermeer D40x55 Navigator/i,
+    /Vermeer MX300 Mixing System/i,
+    /Vermeer VX50 Vacuum Excavator/i,
+    /VX1150 Hydro Excavation Truck/i,
+  ]
   for (const [index, name] of expected.entries()) {
     await page.locator('.equipment-row').nth(index).scrollIntoViewIfNeeded()
     await expect(page.getByRole('heading', { name })).toBeVisible()

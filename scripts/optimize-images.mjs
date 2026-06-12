@@ -11,7 +11,9 @@ const SRC = path.join(ROOT, 'assets-src')
 const OUT = path.join(ROOT, 'public', 'assets')
 
 const ORIGINALS = [
+  'dbc-d40x55-drill.png',
   'dbc-field-truck.jpg',
+  'dbc-hydro-truck.png',
   'dbc-mixing-system.png',
   'dbc-service-truck.jpeg',
   'dbc-vac-excavator.png',
@@ -48,7 +50,13 @@ for (const width of [320, 480]) {
 }
 
 // Equipment cutouts (small studio images; keep native size, high quality)
-for (const name of ['dbc-vermeer-drill', 'dbc-mixing-system', 'dbc-vac-excavator']) {
+for (const name of [
+  'dbc-vermeer-drill',
+  'dbc-mixing-system',
+  'dbc-vac-excavator',
+  'dbc-d40x55-drill',
+  'dbc-hydro-truck',
+]) {
   const out = path.join(OUT, `${name}.webp`)
   await sharp(path.join(SRC, `${name}.png`)).webp({ quality: 88, effort: 6 }).toFile(out)
   results.push([path.basename(out), (await stat(out)).size])

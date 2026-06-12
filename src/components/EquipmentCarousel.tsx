@@ -16,8 +16,22 @@ const units = [
     ],
   },
   {
-    // Image shows the MX300 nameplate; prior site copy said MX150 — confirm with client.
     index: '02',
+    model: 'Vermeer D40x55 Navigator',
+    role: 'Long Crossings',
+    body: 'Step-up thrust and torque for longer runs, larger-diameter product, and harder ground.',
+    image: 'dbc-d40x55-drill',
+    width: 670,
+    height: 450,
+    specs: [
+      ['Model', 'D40x55'],
+      ['Thrust / Pullback', '40,000 lb'],
+      ['Role', 'Long bores + larger product'],
+    ],
+  },
+  {
+    // Image shows the MX300 nameplate; prior site copy said MX150 — confirm with client.
+    index: '03',
     model: 'Vermeer MX300 Mixing System',
     role: 'Fluid Control',
     body: 'Consistent drilling-fluid support for cleaner boreholes, better production rhythm, and fewer field stalls.',
@@ -31,7 +45,7 @@ const units = [
     ],
   },
   {
-    index: '03',
+    index: '04',
     model: 'Vermeer VX50 Vacuum Excavator',
     role: 'Locate + Cleanup',
     body: 'Vacuum excavation support for potholing, spoil handling, restoration, and controlled site turnover.',
@@ -42,6 +56,20 @@ const units = [
       ['Model', 'VX50'],
       ['Function', 'Soft excavation'],
       ['Role', 'Potholing + restoration'],
+    ],
+  },
+  {
+    index: '05',
+    model: 'VX1150 Hydro Excavation Truck',
+    role: 'Hydro Excavation',
+    body: 'Truck-mounted hydro excavation for fast daylighting, deep potholes, and spoil hauled off in the same pass.',
+    image: 'dbc-hydro-truck',
+    width: 525,
+    height: 350,
+    specs: [
+      ['Unit', 'VX1150'],
+      ['Function', 'Hydro excavation'],
+      ['Role', 'Daylighting + spoil removal'],
     ],
   },
 ]

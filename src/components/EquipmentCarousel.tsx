@@ -72,6 +72,20 @@ const units = [
       ['Role', 'Daylighting + spoil removal'],
     ],
   },
+  {
+    index: '06',
+    model: 'Vertex Support Truck',
+    role: 'Site Logistics',
+    body: 'Stocked service body, crew cab, and a conduit reel trailer — tooling, parts, and product arrive with the crew in one move.',
+    image: 'dbc-support-truck',
+    width: 525,
+    height: 350,
+    specs: [
+      ['Setup', 'Crew cab + service body'],
+      ['Tow', 'Conduit reel trailer'],
+      ['Role', 'Crew + material logistics'],
+    ],
+  },
 ]
 
 function EquipmentCarousel() {

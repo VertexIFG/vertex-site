@@ -16,6 +16,7 @@ const ORIGINALS = [
   'dbc-hydro-truck.png',
   'dbc-mixing-system.png',
   'dbc-service-truck.jpeg',
+  'dbc-support-truck.png',
   'dbc-vac-excavator.png',
   'dbc-vermeer-drill.png',
   'vertex-logo-wide.png',
@@ -56,6 +57,7 @@ for (const name of [
   'dbc-vac-excavator',
   'dbc-d40x55-drill',
   'dbc-hydro-truck',
+  'dbc-support-truck',
 ]) {
   const out = path.join(OUT, `${name}.webp`)
   await sharp(path.join(SRC, `${name}.png`)).webp({ quality: 88, effort: 6 }).toFile(out)

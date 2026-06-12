@@ -74,6 +74,7 @@ test('equipment chapter lists the full fleet in order with corrected MX300 label
     /Vermeer MX300 Mixing System/i,
     /Vermeer VX50 Vacuum Excavator/i,
     /VX1150 Hydro Excavation Truck/i,
+    /Vertex Support Truck/i,
   ]
   for (const [index, name] of expected.entries()) {
     await page.locator('.equipment-row').nth(index).scrollIntoViewIfNeeded()

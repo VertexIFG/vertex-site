@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useRef, useState } from 'react'
+import { Suspense, lazy, useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { ScrollTrigger, gsap, useGSAP } from '../lib/gsapSetup'
 import type { SceneDriver } from './scene/RouteScene3D'
 import RouteSceneStatic from './scene/RouteSceneStatic'
@@ -8,13 +8,23 @@ import './RouteChapter.css'
 // initial bundle (guarded by tests/webgl.spec.ts).
 const RouteScene3D = lazy(() => import('./scene/RouteScene3D'))
 
-function canUseWebGL() {
-  try {
-    const probe = document.createElement('canvas')
-    return Boolean(probe.getContext('webgl2') ?? probe.getContext('webgl'))
-  } catch {
-    return false
+// Browser capability, probed once and read hydration-safely (the server
+// snapshot is false, so prerendered HTML always carries the poster variant).
+let webglCapable: boolean | null = null
+const noopSubscribe = () => () => {}
+function readSceneCapability() {
+  if (webglCapable === null) {
+    try {
+      const wantsMotion = window.matchMedia('(prefers-reduced-motion: no-preference)').matches
+      const wide = window.matchMedia('(min-width: 761px)').matches
+      const probe = document.createElement('canvas')
+      webglCapable =
+        wantsMotion && wide && Boolean(probe.getContext('webgl2') ?? probe.getContext('webgl'))
+    } catch {
+      webglCapable = false
+    }
   }
+  return webglCapable
 }
 
 const headingBlock = (
@@ -29,11 +39,9 @@ const headingBlock = (
 
 function RouteChapter() {
   const sectionRef = useRef<HTMLElement | null>(null)
-  const [mode, setMode] = useState<'poster' | 'webgl'>(() => {
-    const wantsMotion = window.matchMedia('(prefers-reduced-motion: no-preference)').matches
-    const wide = window.matchMedia('(min-width: 761px)').matches
-    return wantsMotion && wide && canUseWebGL() ? 'webgl' : 'poster'
-  })
+  const capable = useSyncExternalStore(noopSubscribe, readSceneCapability, () => false)
+  const [forcedPoster, setForcedPoster] = useState(false)
+  const mode: 'poster' | 'webgl' = capable && !forcedPoster ? 'webgl' : 'poster'
   const [near, setNear] = useState(false)
   const driver = useRef<SceneDriver>({ target: 0, invalidate: () => {} })
 
@@ -64,6 +72,11 @@ function RouteChapter() {
         pin: true,
         scrub: 0.7,
         anticipatePin: 1,
+        // this pin is created after hydration (poster -> webgl upgrade), so
+        // later-created is refresh-ordered AFTER the bore pin below unless
+        // prioritized — downstream triggers need this pin's distance applied
+        // before they measure
+        refreshPriority: 1,
         onUpdate: (self) => {
           driver.current.target = self.progress
           driver.current.invalidate()
@@ -97,6 +110,12 @@ function RouteChapter() {
     { scope: sectionRef, dependencies: [mode], revertOnUpdate: true },
   )
 
+  // the poster->webgl swap after hydration changes this section's height
+  // (pin spacer); downstream chapters must re-measure their triggers
+  useEffect(() => {
+    if (mode === 'webgl') ScrollTrigger.refresh()
+  }, [mode])
+
   if (mode === 'webgl') {
     return (
       <section
@@ -110,7 +129,7 @@ function RouteChapter() {
           <div className="route-scene-fade">
             {near && (
               <Suspense fallback={null}>
-                <RouteScene3D driver={driver} onContextLost={() => setMode('poster')} />
+                <RouteScene3D driver={driver} onContextLost={() => setForcedPoster(true)} />
               </Suspense>
             )}
           </div>

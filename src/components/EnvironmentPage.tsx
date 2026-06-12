@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import './SafetyPage.css'
 
 // Environmental responsibility page (/environment) — HDD-specific practices.
@@ -72,10 +71,6 @@ const sections = [
 ]
 
 function EnvironmentPage() {
-  useEffect(() => {
-    document.title = 'Environmental Responsibility | Vertex Infrastructure Group'
-  }, [])
-
   return (
     <>
       <section className="safetypage-hero theme-dark" aria-labelledby="envpage-title">

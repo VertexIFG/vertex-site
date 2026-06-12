@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import './SafetyPage.css'
 
 // Full jobsite-safety program page (/safety). HDD-specific, plain language.
@@ -71,10 +70,6 @@ const sections = [
 ]
 
 function SafetyPage() {
-  useEffect(() => {
-    document.title = 'Jobsite Safety | Vertex Infrastructure Group'
-  }, [])
-
   return (
     <>
       <section className="safetypage-hero theme-dark" aria-labelledby="safetypage-title">

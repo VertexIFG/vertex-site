@@ -106,9 +106,16 @@ function EquipmentCarousel() {
               <div className="equipment-media">
                 <img
                   src={`/assets/${unit.image}.webp`}
+                  {...(unit.width >= 1000
+                    ? {
+                        srcSet: `/assets/${unit.image}-1x.webp ${unit.width / 2}w, /assets/${unit.image}.webp ${unit.width}w`,
+                        sizes: '(max-width: 900px) min(420px, 92vw), 560px',
+                      }
+                    : {})}
                   width={unit.width}
                   height={unit.height}
                   alt={unit.model}
+                  loading="lazy"
                   decoding="async"
                 />
               </div>

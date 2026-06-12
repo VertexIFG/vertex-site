@@ -50,18 +50,23 @@ for (const width of [320, 480]) {
   results.push([path.basename(out), (await stat(out)).size])
 }
 
-// Equipment cutouts (small studio images; keep native size, high quality)
-for (const name of [
-  'dbc-vermeer-drill',
-  'dbc-mixing-system',
-  'dbc-vac-excavator',
-  'dbc-d40x55-drill',
-  'dbc-hydro-truck',
-  'dbc-support-truck',
-]) {
+// Equipment cutouts. Studio originals (525/670) ship at native size; the
+// photographed units are 2x masters and also emit a half-width 1x variant
+// for the srcset on small screens.
+for (const name of ['dbc-vermeer-drill', 'dbc-mixing-system', 'dbc-vac-excavator']) {
   const out = path.join(OUT, `${name}.webp`)
   await sharp(path.join(SRC, `${name}.png`)).webp({ quality: 88, effort: 6 }).toFile(out)
   results.push([path.basename(out), (await stat(out)).size])
+}
+for (const name of ['dbc-d40x55-drill', 'dbc-hydro-truck', 'dbc-support-truck']) {
+  const src = sharp(path.join(SRC, `${name}.png`))
+  const { width } = await src.metadata()
+  const out2x = path.join(OUT, `${name}.webp`)
+  await src.clone().webp({ quality: 88, effort: 6 }).toFile(out2x)
+  results.push([path.basename(out2x), (await stat(out2x)).size])
+  const out1x = path.join(OUT, `${name}-1x.webp`)
+  await src.clone().resize({ width: Math.round(width / 2) }).webp({ quality: 88, effort: 6 }).toFile(out1x)
+  results.push([path.basename(out1x), (await stat(out1x)).size])
 }
 
 // Favicons from the red V mark (square crop of the 2048px logo lockup)

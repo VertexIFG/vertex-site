@@ -1,7 +1,8 @@
 import { ArrowUpRight } from 'lucide-react'
+import { currentPath } from '../lib/currentPath'
 import './SiteFooter.css'
 
-const base = () => (window.location.pathname.replace(/\/$/, '') === '' ? '' : '/')
+const base = () => (currentPath() === '' ? '' : '/')
 const explore = [
   ['#capabilities', 'Services'],
   ['#equipment', 'Equipment'],

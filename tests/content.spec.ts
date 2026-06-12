@@ -34,10 +34,11 @@ test('document title, meta description, and og tags are correct', async ({ page 
   )
   const schema = await page.locator('script[type="application/ld+json"]').textContent()
   expect(JSON.parse(schema || '{}')).toMatchObject({
-    '@type': 'LocalBusiness',
+    '@type': ['GeneralContractor', 'LocalBusiness'],
     name: 'Vertex Infrastructure Group, LLC',
     url: 'https://vertexifg.com/',
     email: 'inquiries@vertexifg.com',
+    slogan: 'Drilling the future, one line at a time.',
   })
 })
 

@@ -1,9 +1,10 @@
 import { useRef, useState } from 'react'
 import { gsap, useGSAP } from '../lib/gsapSetup'
+import { currentPath } from '../lib/currentPath'
 import './SiteHeader.css'
 
 // hash links resolve against the home page; /safety is its own page
-const base = () => (window.location.pathname.replace(/\/$/, '') === '' ? '' : '/')
+const base = () => (currentPath() === '' ? '' : '/')
 const links = [
   ['#capabilities', 'Services'],
   ['#equipment', 'Equipment'],

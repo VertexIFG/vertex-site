@@ -1,5 +1,5 @@
 import { Mail, MapPin, Phone } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useSyncExternalStore } from 'react'
 import MagneticButton from './ui/MagneticButton'
 import './Contact.css'
 
@@ -15,8 +15,12 @@ const EMAIL = 'inquiries@vertexifg.com'
 // inquiry arrives normally (and the redirect kicks in).
 const ACTION = `https://formsubmit.co/${EMAIL}`
 
+// browser-only value, read hydration-safely (server snapshot: false)
+const noopSubscribe = () => () => {}
+const readSent = () => new URLSearchParams(window.location.search).has('sent')
+
 function Contact() {
-  const [sent] = useState(() => new URLSearchParams(window.location.search).has('sent'))
+  const sent = useSyncExternalStore(noopSubscribe, readSent, () => false)
   const nextRef = useRef<HTMLInputElement | null>(null)
 
   useEffect(() => {

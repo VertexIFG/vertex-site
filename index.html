@@ -43,15 +43,66 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "LocalBusiness",
+        "@type": ["GeneralContractor", "LocalBusiness"],
         "@id": "https://vertexifg.com/#organization",
         "name": "Vertex Infrastructure Group, LLC",
         "url": "https://vertexifg.com/",
         "logo": "https://vertexifg.com/assets/vertex-wordmark-480.webp",
         "image": "https://vertexifg.com/assets/og-image.jpg",
         "description": "Horizontal directional drilling and trenchless underground utility installation for fiber optic, gas, electric, water, and sewer infrastructure projects.",
+        "slogan": "Drilling the future, one line at a time.",
         "email": "inquiries@vertexifg.com",
         "telephone": "+1-224-531-5731",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "sales",
+          "email": "inquiries@vertexifg.com",
+          "telephone": "+1-224-531-5731",
+          "areaServed": "US",
+          "availableLanguage": "English"
+        },
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Trenchless Utility Installation Services",
+          "itemListElement": [
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Fiber Optic Conduit Installation",
+                "serviceType": "Horizontal directional drilling",
+                "description": "Drilled conduit paths for fiber routes beneath roads, driveways, and finished surfaces."
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Gas Line Crossings",
+                "serviceType": "Horizontal directional drilling",
+                "description": "Bored crossings and carrier-pipe paths for gas mains and services, locate-verified around live utilities."
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Electric Duct Runs",
+                "serviceType": "Horizontal directional drilling",
+                "description": "Conduit and duct corridors drilled beneath roads, parking lots, and finished surfaces for power."
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Water & Sewer Bores",
+                "serviceType": "Horizontal directional drilling",
+                "description": "Cased bores for water and sewer lines where opening up the surface isn't an option."
+              }
+            }
+          ]
+        },
         "address": {
           "@type": "PostalAddress",
           "streetAddress": "14729 Spring Valley Road",
@@ -84,6 +135,7 @@
     />
     <title>Vertex Infrastructure Group | Horizontal Directional Drilling</title>
     <!-- Google tag (gtag.js) -->
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-7WT61BWC3N"></script>
     <script>
       window.dataLayer = window.dataLayer || []

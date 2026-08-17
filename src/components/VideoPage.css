@@ -6,14 +6,19 @@
   background-size: 72px 72px;
 }
 
-.videopage h1 {
-  font-size: var(--t-h2);
-  max-width: 22ch;
+/* the film is the page: the heading exists for the document outline only */
+.videopage-title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 
 .videopage-stage {
   position: relative;
-  margin-top: var(--space-4);
+  margin-top: 0;
   width: 100%;
   aspect-ratio: 16 / 9;
   background: var(--black);

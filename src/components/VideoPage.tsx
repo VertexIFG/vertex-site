@@ -10,7 +10,7 @@ function VideoPage() {
   return (
     <section className="videopage theme-dark" aria-labelledby="videopage-title">
       <div className="container">
-        <h1 id="videopage-title">Horizontal directional drilling, in sixty seconds.</h1>
+        <h1 id="videopage-title" className="videopage-title">Video</h1>
         <div className="videopage-stage">
           <video
             controls

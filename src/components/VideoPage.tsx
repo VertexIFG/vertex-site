@@ -3,8 +3,8 @@ import './VideoPage.css'
 // /video — the sixty second film. Native controls (play, pause, scrub, full
 // screen), autoplays muted and loops; the file lives in the marketing bucket.
 const MEDIA = 'https://lqxnfzmwlpqadhpxsigs.supabase.co/storage/v1/object/public/marketing-media'
-export const VIDEO_SRC = `${MEDIA}/vertex-ifg-film-1080-v3.mp4`
-export const VIDEO_POSTER = `${MEDIA}/vertex-ifg-film-poster-v3.jpg`
+export const VIDEO_SRC = `${MEDIA}/vertex-ifg-film-1080-v4.mp4`
+export const VIDEO_POSTER = `${MEDIA}/vertex-ifg-film-poster-v4.jpg`
 
 function VideoPage() {
   return (

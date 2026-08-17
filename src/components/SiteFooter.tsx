@@ -8,6 +8,7 @@ const explore = [
   ['#equipment', 'Equipment'],
   ['/safety', 'Safety'],
   ['/environment', 'Environment'],
+  ['/video', 'Video'],
 ] as const
 const resolve = (href: string) => (href.startsWith('#') ? `${base()}${href}` : href)
 

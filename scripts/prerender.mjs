@@ -54,6 +54,7 @@ const ROUTES = [
   { path: '', out: 'index.html' },
   { path: '/safety', out: 'safety.html' },
   { path: '/environment', out: 'environment.html' },
+  { path: '/video', out: 'video.html' },
 ]
 
 for (const route of ROUTES) {
@@ -122,6 +123,7 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 ${urlEntry(`${ORIGIN}/`, '1.0', equipmentImages)}
 ${urlEntry(`${ORIGIN}/safety`, '0.7')}
 ${urlEntry(`${ORIGIN}/environment`, '0.7')}
+${urlEntry(`${ORIGIN}/video`, '0.6')}
 </urlset>
 `
 await writeFile(path.join(ROOT, 'dist/sitemap.xml'), sitemap)

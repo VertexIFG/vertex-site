@@ -130,6 +130,10 @@ function Hero() {
             </span>
           </a>
         </MagneticButton>
+        <a className="hero-video" href="/video">
+          <span className="hero-video-play" aria-hidden="true" />
+          <span>Watch the video</span>
+        </a>
       </div>
     </section>
   )

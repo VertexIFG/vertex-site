@@ -97,6 +97,51 @@
   z-index: 1;
 }
 
+/* the sixty second film, one quiet line under the button */
+.hero-video {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 96px);
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: var(--t-mono);
+  font-weight: 500;
+  letter-spacing: var(--track-mono);
+  text-transform: uppercase;
+  color: var(--paper);
+  text-decoration: none;
+  opacity: 0.85;
+  transition: opacity var(--dur-hover) var(--ease-mech), transform var(--dur-hover) var(--ease-mech);
+}
+
+.hero-video:hover {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-1px);
+}
+
+.hero-video-play {
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 50%;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.hero-video-play::after {
+  content: '';
+  position: absolute;
+  left: 11px;
+  top: 8px;
+  border-left: 9px solid var(--red);
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+}
+
 /* sonar echoes: the button's outline radiating outward, like a locate signal */
 .hero-cta-echo {
   position: absolute;

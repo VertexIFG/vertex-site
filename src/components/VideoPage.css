@@ -1,0 +1,31 @@
+.videopage {
+  padding: calc(var(--header-h) + var(--space-4)) 0 var(--space-6);
+  background-image:
+    linear-gradient(var(--grid-d) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-d) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
+
+.videopage h1 {
+  font-size: var(--t-h2);
+  max-width: 22ch;
+}
+
+.videopage-stage {
+  position: relative;
+  margin-top: var(--space-4);
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--black);
+  border: 1px solid var(--line-d);
+  box-shadow: 0 60px 140px -60px rgba(0, 0, 0, 0.9);
+}
+
+.videopage-stage video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: var(--black);
+}

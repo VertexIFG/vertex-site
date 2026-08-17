@@ -4,6 +4,11 @@
  * bakes these into each route's static HTML).
  */
 export const ROUTE_HEAD: Record<string, { title: string; description: string }> = {
+  '/video': {
+    title: 'Video | Vertex Infrastructure Group',
+    description:
+      'Sixty seconds of Vertex Infrastructure Group: horizontal directional drilling for fiber, gas, electric and water, the rigs, and how a line is installed under a road.',
+  },
   '/safety': {
     title: 'Safety Program | Vertex Infrastructure Group',
     description:

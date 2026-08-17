@@ -15,11 +15,13 @@ import Contact from './components/Contact'
 import SiteFooter from './components/SiteFooter'
 import SafetyPage from './components/SafetyPage'
 import EnvironmentPage from './components/EnvironmentPage'
+import VideoPage from './components/VideoPage'
 
 function App() {
   const path = currentPath()
   const onSafetyPage = path === '/safety'
   const onEnvironmentPage = path === '/environment'
+  const onVideoPage = path === '/video'
 
   useEffect(() => {
     const head = ROUTE_HEAD[path]
@@ -43,6 +45,8 @@ function App() {
           <SafetyPage />
         ) : onEnvironmentPage ? (
           <EnvironmentPage />
+        ) : onVideoPage ? (
+          <VideoPage />
         ) : (
           <>
         <Hero />
